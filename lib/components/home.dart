@@ -3,19 +3,50 @@ import 'package:flutter/material.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(5),
-      child: Column(
-        children: [TodoCard(), TodoCard(), TodoCard(), TodoCard()],
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          FlatButton.icon(
+              shape: CircleBorder(),
+              onPressed: () {},
+              icon: Icon(Icons.add, color: Colors.white),
+              label: Text(
+                'Add',
+                style: TextStyle(color: Colors.white),
+              )),
+          FlatButton.icon(
+              onPressed: () {},
+              icon: Icon(Icons.sync, color: Colors.white),
+              label: Text(
+                'Sync',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+        title: Text("Todo App"),
+      ),
+      body: Container(
+        margin: EdgeInsets.all(5),
+        child: Column(
+          children: [
+            TodoCard(title: "Potato", desc: "Add a potato"),
+            TodoCard(title: "Potato", desc: "Add a potato"),
+            TodoCard(title: "Potato", desc: "Add a potato"),
+            TodoCard(title: "Potato", desc: "Add a potato")
+          ],
+        ),
       ),
     );
   }
 }
 
 class TodoCard extends StatelessWidget {
-  const TodoCard({
-    Key key,
-  }) : super(key: key);
+  final String title;
+  final String desc;
+
+  static final titleStyle =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+
+  const TodoCard({@required this.title, @required this.desc});
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +57,14 @@ class TodoCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Potato",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              title,
+              style: titleStyle,
+              textDirection: TextDirection.ltr,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("Add a potato to list"),
+            child: Text(desc, textDirection: TextDirection.ltr),
           )
         ],
       ),

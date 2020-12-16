@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'components/home.dart';
+import 'package:flutter_task_app/components/loading.dart';
+import 'package:flutter_task_app/components/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {'/': (context) => Loading(), '/home': (context) => Home()},
     );
   }
 }
@@ -33,29 +33,30 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          actions: [
-            FlatButton.icon(
-                shape: CircleBorder(),
-                onPressed: () {},
-                icon: Icon(Icons.add, color: Colors.white),
-                label: Text(
-                  'Add',
-                  style: TextStyle(color: Colors.white),
-                )),
-            FlatButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.sync, color: Colors.white),
-                label: Text(
-                  'Sync',
-                  style: TextStyle(color: Colors.white),
-                ))
-          ],
-          title: Text("Todo App"),
-        ),
-        body:
-            Home() // This trailing comma makes auto-formatting nicer for build methods.
-        );
+    return Loading() ??
+        Scaffold(
+            appBar: AppBar(
+              actions: [
+                FlatButton.icon(
+                    shape: CircleBorder(),
+                    onPressed: () {},
+                    icon: Icon(Icons.add, color: Colors.white),
+                    label: Text(
+                      'Add',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                FlatButton.icon(
+                    onPressed: () {},
+                    icon: Icon(Icons.sync, color: Colors.white),
+                    label: Text(
+                      'Sync',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+              title: Text("Todo App"),
+            ),
+            body:
+                Home() // This trailing comma makes auto-formatting nicer for build methods.
+            );
   }
 }
