@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:taskc/taskc.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var t = Task(description: "Add a tomato");
+    print(t);
     return Scaffold(
       appBar: AppBar(
         actions: [

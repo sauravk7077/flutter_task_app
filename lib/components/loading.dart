@@ -4,6 +4,9 @@ import 'package:loading_animations/loading_animations.dart';
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacementNamed(context, '/config');
+    });
     return Container(
         decoration: BoxDecoration(color: Colors.blue),
         child: Column(
