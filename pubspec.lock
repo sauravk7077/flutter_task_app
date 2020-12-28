@@ -433,11 +433,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "2dd3e75bba28bb216aef4f77cecbb7e814321120"
-      resolved-ref: "2dd3e75bba28bb216aef4f77cecbb7e814321120"
+      ref: "02b14a9261953872795a265f520b2ad48d826312"
+      resolved-ref: "02b14a9261953872795a265f520b2ad48d826312"
       url: "git://github.com/bradyt/taskd-client-dart.git"
     source: git
-    version: "0.0.0"
+    version: "0.0.0-alpha.0"
   term_glyph:
     dependency: transitive
     description:
@@ -473,6 +473,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0-nullsafety.3"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.2"
   vector_math:
     dependency: transitive
     description:

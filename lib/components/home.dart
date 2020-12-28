@@ -1,42 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_app/shared/misc.dart';
 import 'package:taskc/taskc.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var t = Task(description: "Add a tomato");
-    print(t);
     return Scaffold(
       appBar: AppBar(
         actions: [
-          FlatButton.icon(
-              shape: CircleBorder(),
-              onPressed: () {},
-              icon: Icon(Icons.add, color: Colors.white),
-              label: Text(
-                'Add',
-                style: TextStyle(color: Colors.white),
-              )),
           FlatButton.icon(
               onPressed: () {},
               icon: Icon(Icons.sync, color: Colors.white),
               label: Text(
                 'Sync',
                 style: TextStyle(color: Colors.white),
-              ))
+              )),
+          FlatButton.icon(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, '/config');
+            },
+            label: Text(
+              'Settings',
+              style: TextStyle(color: Colors.white),
+            ),
+          )
         ],
         title: Text("Todo App"),
       ),
       body: Container(
         margin: EdgeInsets.all(5),
         child: Column(
-          children: [
-            TodoCard(title: "Potato", desc: "Add a potato"),
-            TodoCard(title: "Potato", desc: "Add a potato"),
-            TodoCard(title: "Potato", desc: "Add a potato"),
-            TodoCard(title: "Potato", desc: "Add a potato")
-          ],
+          children: [],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) {
+                return TaskForm();
+              });
+          print(await syncData());
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
@@ -70,6 +78,48 @@ class TodoCard extends StatelessWidget {
             child: Text(desc, textDirection: TextDirection.ltr),
           )
         ],
+      ),
+    );
+  }
+}
+
+class TaskForm extends StatefulWidget {
+  @override
+  _TaskFormState createState() => _TaskFormState();
+}
+
+class _TaskFormState extends State<TaskForm> {
+  TextEditingController _taskNameController =
+      new TextEditingController(text: '');
+
+  void _addData(context) async {
+    await syncData(task: _taskNameController.text);
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Form(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Description", style: Theme.of(context).textTheme.headline5),
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: TextFormField(controller: _taskNameController),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () => _addData(context),
+              label: Text("Add"),
+              icon: Icon(Icons.add),
+            )
+          ],
+        ),
       ),
     );
   }

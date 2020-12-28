@@ -21,11 +21,4 @@ void main() {
     expect(title, findsOneWidget);
     expect(desc, findsOneWidget);
   });
-
-  testWidgets('Shows loading', (WidgetTester tester) async {
-    await tester.pumpWidget(Loading());
-    final text = find.text("Loading");
-
-    expect(text, findsOneWidget);
-  });
 }

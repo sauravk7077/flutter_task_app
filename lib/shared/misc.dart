@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:taskc/taskc.dart';
 
 Future<String> getFileFromDialog() async {
   FileInfo fi;
@@ -27,4 +28,30 @@ Future<void> saveFile({@required String data, @required String name}) async {
 Future<String> readFile(String name) async {
   var box = await Hive.openBox('box');
   return box.get(name);
+}
+
+final String server = "inthe.am";
+final int port = 53589;
+final String cred = "inthe_am/sauravk865/14d86820-40db-4291-9725-ea91573285fc";
+
+Future<List<Task>> syncData({String task}) async {
+  try {
+    var box = Hive.box('box');
+    var payload;
+    if (task != null) payload = Payload.fromString(task);
+    var connection = Connection(
+        address: server,
+        port: port,
+        context: SecurityContext()
+          ..useCertificateChainBytes(utf8.encode(box.get('2')))
+          ..usePrivateKeyBytes(utf8.encode(box.get('1'))),
+        onBadCertificate: (_) => true);
+    var credentials = Credentials.fromString(cred);
+    var response = await synchronize(
+        connection: connection, credentials: credentials, payload: payload);
+    return response.payload.tasks;
+  } on Exception catch (e) {
+    print(e);
+    return null;
+  }
 }

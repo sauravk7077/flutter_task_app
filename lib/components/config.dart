@@ -99,7 +99,11 @@ class _ConfigurationState extends State<Configuration> {
             //Ca File
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               ElevatedButton(child: Text("Save"), onPressed: _saveToBox),
-              RaisedButton(child: Text("Close"), onPressed: () {})
+              RaisedButton(
+                  child: Text("Close"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
             ])
           ],
         ),
