@@ -4,6 +4,7 @@ import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:taskc/taskc.dart';
+import 'package:uuid/uuid.dart';
 
 Future<String> getFileFromDialog() async {
   FileInfo fi;
@@ -34,11 +35,23 @@ final String server = "inthe.am";
 final int port = 53589;
 final String cred = "inthe_am/sauravk865/14d86820-40db-4291-9725-ea91573285fc";
 
+Task generateNewTask(String desc) {
+  var time = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+  return Task(
+    status: 'pending',
+    uuid: Uuid().v1(),
+    entry: time,
+    description: desc,
+  );
+}
+
 Future<List<Task>> syncData({String task}) async {
   try {
     var box = Hive.box('box');
+    var userKey = await readFile('userKey');
     var payload;
-    if (task != null) payload = Payload.fromString(task);
+    if (task != null)
+      payload = Payload(tasks: <Task>[generateNewTask(task)], userKey: userKey);
     var connection = Connection(
         address: server,
         port: port,
@@ -49,6 +62,12 @@ Future<List<Task>> syncData({String task}) async {
     var credentials = Credentials.fromString(cred);
     var response = await synchronize(
         connection: connection, credentials: credentials, payload: payload);
+    print(response.header);
+    print(response.payload.userKey);
+    await saveFile(name: 'userKey', data: response.payload.userKey);
+    for (var task in response.payload.tasks) {
+      print(task.description);
+    }
     return response.payload.tasks;
   } on Exception catch (e) {
     print(e);

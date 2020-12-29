@@ -9,7 +9,9 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         actions: [
           FlatButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                await syncData();
+              },
               icon: Icon(Icons.sync, color: Colors.white),
               label: Text(
                 'Sync',
@@ -42,7 +44,6 @@ class Home extends StatelessWidget {
               builder: (context) {
                 return TaskForm();
               });
-          print(await syncData());
         },
         child: Icon(Icons.add),
       ),
