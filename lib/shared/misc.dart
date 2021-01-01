@@ -102,7 +102,7 @@ Future<Map> syncData() async {
       throw TaskdException(response.header);
   }
   for (var task in response.payload.tasks) {
-    await addTask(Task.fromJson(json.decode(task)));
+    await dataBox.put(json.decode(task)['uuid'], json.decode(task));
   }
 
   return response.header;
