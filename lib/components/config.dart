@@ -66,52 +66,45 @@ class _ConfigurationState extends State<Configuration> {
   }
 
   Widget firstTab() {
-    return Column(children: [
-      Form(
-        key: _formkey,
-        child: Column(
-          children: [
-            ListView.builder(
-              itemCount: _titles.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: Configuration._margin2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        child: Text('${_titles[index]}:'),
-                        padding: Configuration._margin2,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                                padding: Configuration._margin2,
-                                child: TextFormField(
-                                  decoration: _inputDeco,
-                                  controller: _controllers[index],
-                                )),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _importAndSetData(index);
-                            },
-                            child: Text('Import'),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
+    return Form(
+      key: _formkey,
+      child: ListView.builder(
+        itemCount: _titles.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: Configuration._margin2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  child: Text('${_titles[index]}:'),
+                  padding: Configuration._margin2,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                          padding: Configuration._margin2,
+                          child: TextFormField(
+                            decoration: _inputDeco,
+                            controller: _controllers[index],
+                          )),
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        _importAndSetData(index);
+                      },
+                      child: Text('Import'),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            //Ca File
-          ],
-        ),
+          );
+        },
       ),
-    ]);
+    );
   }
 
   Widget secondTab() {
@@ -119,7 +112,7 @@ class _ConfigurationState extends State<Configuration> {
       margin: Configuration._margin1,
       child: Form(
         key: _credFormkey,
-        child: Column(children: [
+        child: ListView(children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
