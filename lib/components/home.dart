@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:taskc/taskc.dart';
 
@@ -128,9 +129,33 @@ class TodoCard extends StatelessWidget {
                     Flexible(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Text(
-                          task.description,
-                          style: TextStyle(fontSize: 18),
+                        child: RichText(
+                          text: TextSpan(
+                            style: GoogleFonts.firaMono(),
+                            children: [
+                              TextSpan(
+                                text: '/',
+                                style: TextStyle(
+                                  color: (Theme.of(context).brightness ==
+                                          Brightness.dark)
+                                      ? Color(0xffa9a9a9)
+                                      : Color(0xffd3d3d3),
+                                ),
+                              ),
+                              TextSpan(
+                                text: task.description,
+                              ),
+                              TextSpan(
+                                text: '/',
+                                style: TextStyle(
+                                  color: (Theme.of(context).brightness ==
+                                          Brightness.dark)
+                                      ? Color(0xffa9a9a9)
+                                      : Color(0xffd3d3d3),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
