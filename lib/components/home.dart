@@ -105,11 +105,13 @@ class TodoCard extends StatelessWidget {
                 SizedBox(height: 5),
                 Container(
                   alignment: Alignment.bottomRight,
-                  child: Text(DateFormat('kk:ss').format(task.modified)),
-                )
+                  child: Text(
+                    DateFormat('kk:ss').format(task.modified.toLocal()),
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
