@@ -22,7 +22,7 @@ Future<String> getFileFromDialog() async {
 }
 
 Task generateNewTask(String desc) {
-  var time = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+  var time = DateTime.now().toUtc();
   return Task(
       status: 'pending',
       uuid: Uuid().v1(),
