@@ -61,12 +61,12 @@ Future<void> syncData() async {
       port = int.parse(server.last);
       credentials = Credentials.fromString(taskrc['taskd.credentials']);
     } catch (_) {
-      ca = utf8.encode(readFileFromPemBox('0'));
-      certificate = utf8.encode(readFileFromPemBox('2'));
-      key = utf8.encode(readFileFromPemBox('1'));
-      address = readFileFromCredBox('0');
-      port = int.parse(readFileFromCredBox('1'));
-      credentials = Credentials.fromString(readFileFromCredBox('2'));
+      ca = utf8.encode(readFileFromPemBox('ca'));
+      certificate = utf8.encode(readFileFromPemBox('certificate'));
+      key = utf8.encode(readFileFromPemBox('key'));
+      address = readFileFromCredBox('server');
+      port = int.parse(readFileFromCredBox('port'));
+      credentials = Credentials.fromString(readFileFromCredBox('credentials'));
     }
     var connection = Connection(
         address: address,
