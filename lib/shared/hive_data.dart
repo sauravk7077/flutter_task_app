@@ -19,6 +19,13 @@ Future<void> initializeDatabase(Directory _d) async {
   );
 }
 
+Future<void> resetDatabase() async {
+  await File('${d.path}/.task').delete(
+    recursive: true,
+  );
+  await initializeDatabase(d);
+}
+
 ValueListenable<Box<dynamic>> getDataBoxListenable() {
   return dataBox.listenable();
 }

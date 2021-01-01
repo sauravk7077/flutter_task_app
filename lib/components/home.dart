@@ -18,6 +18,31 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          if (kDebugMode)
+            IconButton(
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    scrollable: true,
+                    title: Text('Reset database'),
+                    content: Text(
+                      'This will remove your local tasks and configuration. Are you sure?',
+                    ),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: Text('Reset'),
+                        onPressed: () async {
+                          await resetDatabase();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: Icon(Icons.warning),
+            ),
           IconButton(
               onPressed: () async {
                 try {
