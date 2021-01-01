@@ -21,7 +21,7 @@ void main() {
       (WidgetTester tester) async {
     await tester
         .pumpWidget(MaterialApp(home: TodoCard(task: generateNewTask('desc'))));
-    final desc = find.text('desc');
+    final desc = find.text('/desc/');
     expect(desc, findsOneWidget);
   });
 

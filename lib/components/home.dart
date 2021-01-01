@@ -129,8 +129,8 @@ class TodoCard extends StatelessWidget {
                     Flexible(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: RichText(
-                          text: TextSpan(
+                        child: Text.rich(
+                          TextSpan(
                             style: GoogleFonts.firaMono(),
                             children: [
                               TextSpan(
