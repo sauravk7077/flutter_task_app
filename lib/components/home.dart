@@ -27,6 +27,7 @@ class Home extends StatelessWidget {
                     scrollable: true,
                     title: Text('Reset database'),
                     content: Text(
+                      // ignore: lines_longer_than_80_chars
                       'This will remove your local tasks and configuration. Are you sure?',
                     ),
                     actions: <Widget>[
@@ -159,7 +160,7 @@ class TodoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   Row(
@@ -217,7 +218,7 @@ class TodoCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${age(task.entry)}',
+                        age(task.entry),
                       ),
                       Flexible(
                         child: Text(
@@ -245,7 +246,7 @@ class _TaskFormState extends State<TaskForm> {
   final TextEditingController _taskNameController =
       TextEditingController(text: '');
 
-  void _addData(context) async {
+  Future<void> _addData(context) async {
     var task = generateNewTask(_taskNameController.text);
     await addTask(task);
     Navigator.pop(context);

@@ -3,7 +3,7 @@ include: package:pedantic/analysis_options.yaml
 linter:
   rules:
     - always_declare_return_types
-    # - always_put_control_body_on_new_line
+    - always_put_control_body_on_new_line
     - always_put_required_named_parameters_first
     - always_require_non_null_named_parameters
     # - always_specify_types # inconsistent with pedantic
@@ -20,7 +20,7 @@ linter:
     - avoid_equals_and_hash_code_on_mutable_classes
     - avoid_escaping_inner_quotes
     - avoid_field_initializers_in_const_classes
-    # - avoid_function_literals_in_foreach_calls
+    - avoid_function_literals_in_foreach_calls
     - avoid_implementing_value_types
     - avoid_init_to_null
     - avoid_js_rounded_ints
@@ -38,14 +38,14 @@ linter:
     - avoid_returning_this
     - avoid_setters_without_getters
     - avoid_shadowing_type_parameters
-    # - avoid_single_cascade_in_expression_statements
+    - avoid_single_cascade_in_expression_statements
     - avoid_slow_async_io
     # - avoid_type_to_string # undefined_lint_warning
     - avoid_types_as_parameter_names
-    # - avoid_types_on_closure_parameters
+    - avoid_types_on_closure_parameters
     - avoid_unnecessary_containers
-    # - avoid_unused_constructor_parameters
-    # - avoid_void_async
+    - avoid_unused_constructor_parameters
+    - avoid_void_async
     - avoid_web_libraries_in_flutter
     - await_only_futures
     - camel_case_extensions
@@ -75,7 +75,7 @@ linter:
     - leading_newlines_in_multiline_strings
     - library_names
     - library_prefixes
-    # - lines_longer_than_80_chars
+    - lines_longer_than_80_chars
     - list_remove_unrelated_type
     - literal_only_boolean_expressions
     - missing_whitespace_between_adjacent_strings
@@ -101,9 +101,9 @@ linter:
     - prefer_collection_literals
     - prefer_conditional_assignment
     # - prefer_const_constructors
-    # - prefer_const_constructors_in_immutables
+    - prefer_const_constructors_in_immutables
     - prefer_const_declarations
-    # - prefer_const_literals_to_create_immutables
+    - prefer_const_literals_to_create_immutables
     - prefer_constructors_over_static_methods
     - prefer_contains
     # - prefer_double_quotes # inconsistent with pedantic
@@ -120,7 +120,7 @@ linter:
     - prefer_if_null_operators
     - prefer_initializing_formals
     - prefer_inlined_adds
-    # - prefer_int_literals
+    - prefer_int_literals
     - prefer_interpolation_to_compose_strings
     - prefer_is_empty
     - prefer_is_not_empty
@@ -131,10 +131,10 @@ linter:
     # - prefer_relative_imports
     - prefer_single_quotes
     - prefer_spread_collections
-    # - prefer_typing_uninitialized_variables
+    - prefer_typing_uninitialized_variables
     - prefer_void_to_null
     - provide_deprecation_message
-    - public_member_api_docs
+    # - public_member_api_docs
     - recursive_getters
     - sized_box_for_whitespace
     - slash_for_doc_comments
@@ -148,12 +148,12 @@ linter:
     - type_annotate_public_apis
     - type_init_formals
     - unawaited_futures
-    # - unnecessary_await_in_return
+    - unnecessary_await_in_return
     - unnecessary_brace_in_string_interps
     - unnecessary_const
-    # - unnecessary_final
+    - unnecessary_final
     - unnecessary_getters_setters
-    # - unnecessary_lambdas
+    - unnecessary_lambdas
     - unnecessary_new
     - unnecessary_null_aware_assignments
     # - unnecessary_null_checks # undefined_lint_warning
@@ -164,7 +164,7 @@ linter:
     - unnecessary_raw_strings
     - unnecessary_statements
     - unnecessary_string_escapes
-    # - unnecessary_string_interpolations
+    - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
     - unsafe_html

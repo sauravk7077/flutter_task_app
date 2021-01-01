@@ -11,7 +11,7 @@ Directory d;
 
 Future<void> initializeDatabase(Directory _d) async {
   d = _d;
-  Hive..init('${d.path}/.task');
+  Hive.init('${d.path}/.task');
   dataBox = await Hive.openBox('data');
   credBox = await Hive.openBox('cred');
   File('${d.path}/.task/backlog.data').createSync(
@@ -39,8 +39,8 @@ Future<void> addTask(Task task) async {
 }
 
 Future<void> saveFileToCredBox(
-        {@required dynamic data, @required String name}) async =>
-    await credBox.put(name, data);
+        {@required dynamic data, @required String name}) =>
+    credBox.put(name, data);
 
 dynamic readFileFromCredBox(String name) => credBox.get(name);
 

@@ -1,10 +1,14 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:taskc/taskc.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:flutter_task_app/shared/hive_data.dart';
 
 Future<String> getFileFromDialog() async {
   FileInfo fi;
@@ -12,7 +16,7 @@ Future<String> getFileFromDialog() async {
   var data = await FilePickerWritable().openFile((fileInfo, file) async {
     fi = fileInfo;
     f = file;
-    return await f.readAsString();
+    return f.readAsString();
   });
   if (fi == null) {
     return null;
@@ -81,9 +85,9 @@ Future<Map> syncData() async {
   }
   switch (response.header['code']) {
     case '200':
-      response.payload.tasks.forEach(
-        (task) => addTask(Task.fromJson(json.decode(task))),
-      );
+      for (var task in response.payload.tasks) {
+        await addTask(Task.fromJson(json.decode(task)));
+      }
       File('${d.path}/.task/backlog.data').writeAsStringSync(
         '${response.payload.userKey}\n',
       );
@@ -96,9 +100,9 @@ Future<Map> syncData() async {
     default:
       throw Exception(response.header);
   }
-  response.payload.tasks.forEach((task) {
-    addTask(Task.fromJson(json.decode(task)));
-  });
+  for (var task in response.payload.tasks) {
+    await addTask(Task.fromJson(json.decode(task)));
+  }
 
   return response.header;
 }
@@ -146,7 +150,7 @@ double urgencyTags(Task task) {
     } else if (task.tags.length == 2) {
       return 0.9;
     } else if (task.tags.length > 2) {
-      return 1.0;
+      return 1;
     }
   }
   return 0;
@@ -157,7 +161,7 @@ double urgencyDue(Task task) {
     var daysOverdue = DateTime.now().difference(task.due).inSeconds / 86400;
 
     if (daysOverdue >= 7.0) {
-      return 1.0;
+      return 1;
     } else if (daysOverdue >= -14.0) {
       return num.parse(
           ((daysOverdue + 14) * 0.8 / 21 + 0.2).toStringAsFixed(3));
