@@ -26,15 +26,15 @@ Future<String> getFileFromDialog() async {
   }
 }
 
-Task generateNewTask(String desc) {
+Task generateNewTask(String description) {
   var time = DateTime.now().toUtc();
   return Task(
-      status: 'pending',
-      uuid: Uuid().v1(),
-      entry: time,
-      description: desc,
-      modified: time,
-      priority: 'L');
+    status: 'pending',
+    uuid: Uuid().v1(),
+    entry: time,
+    description: description,
+    modified: time,
+  );
 }
 
 Future<Map> syncData() async {
