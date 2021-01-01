@@ -53,7 +53,7 @@ class Detail extends StatelessWidget {
 }
 
 class DetailCard extends StatelessWidget {
-  DetailCard({this.desc, this.value});
+  const DetailCard({this.desc, this.value});
 
   final String desc;
   final String value;
