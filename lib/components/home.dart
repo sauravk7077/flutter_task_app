@@ -22,10 +22,11 @@ class Home extends StatelessWidget {
               child: Icon(Icons.sync)),
           MaterialButton(
               onPressed: () async {
+                var packageInfo = await PackageInfo.fromPlatform();
                 showAboutDialog(
                     context: context,
-                    applicationName: 'Task App',
-                    applicationVersion: '0.0.0');
+                    applicationName: packageInfo.appName,
+                    applicationVersion: packageInfo.version);
               },
               child: Icon(Icons.info)),
           MaterialButton(
