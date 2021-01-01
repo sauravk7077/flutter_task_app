@@ -33,6 +33,6 @@ void main() {
       await tester.pumpWidget(MaterialApp(home: Configuration()));
     });
 
-    expect(tester.takeException(), isInstanceOf<Error>());
+    expect(tester.takeException(), null);
   });
 }
