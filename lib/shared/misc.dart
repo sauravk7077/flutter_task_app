@@ -4,6 +4,7 @@ import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:taskc/taskc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -33,13 +34,11 @@ Task generateNewTask(String desc) {
       priority: '0');
 }
 
-Future<void> syncData({String task}) async {
+Future<void> syncData() async {
   try {
     var box = Hive.box('box');
-    var userKey = readFileFromBoxBox('userKey');
-    var payload;
-    if (task != null)
-      payload = Payload(tasks: <Task>[generateNewTask(task)], userKey: userKey);
+    Directory d = await getApplicationDocumentsDirectory();
+    var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
     var ca;
     var certificate;
     var key;
@@ -82,15 +81,30 @@ Future<void> syncData({String task}) async {
     var response = await synchronize(
         connection: connection, credentials: credentials, payload: payload);
     print(response.header);
-    await saveFileToBoxBox(name: 'userKey', data: response.payload.userKey);
     for (var task in response.payload.tasks) {
-      print(task.description);
+      print(json.decode(task)['description']);
     }
-    if (task == null) {
-      await saveFileToDataBox(
-          name: 'todos',
-          data: response.payload.tasks.map((task) => task.toJson()).toList());
+    switch (response.header['code']) {
+      case '200':
+        response.payload.tasks.forEach(
+          (task) => addTask(Task.fromJson(json.decode(task))),
+        );
+        File('${d.path}/.task/backlog.data').writeAsStringSync(
+          '${response.payload.userKey}\n',
+        );
+        break;
+      case '201':
+        File('${d.path}/.task/backlog.data').writeAsStringSync(
+          '${response.payload.userKey}\n',
+        );
+        break;
+      default:
+        throw Exception(response.header);
     }
+    response.payload.tasks.forEach((task) {
+      addTask(Task.fromJson(json.decode(task)));
+    });
+
   } on Exception catch (e) {
     print(e);
   }

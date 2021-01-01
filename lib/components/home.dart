@@ -37,9 +37,10 @@ class Home extends StatelessWidget {
         builder: (context, box, _) => Container(
           margin: EdgeInsets.all(5),
           child: ListView.builder(
-            itemCount: box.get('todos').length,
+            itemCount: box.toMap().entries.length,
             itemBuilder: (buildContext, i) {
-              return TodoCard(task: Task.fromJson(box.get('todos')[i]));
+              return TodoCard(
+                  task: Task.fromJson(box.toMap().entries.elementAt(i).value));
             },
           ),
         ),
@@ -52,7 +53,6 @@ class Home extends StatelessWidget {
               builder: (context) {
                 return TaskForm();
               });
-          await syncData();
         },
         child: Icon(Icons.add),
       ),
@@ -126,7 +126,8 @@ class _TaskFormState extends State<TaskForm> {
       new TextEditingController(text: '');
 
   void _addData(context) async {
-    await syncData(task: _taskNameController.text);
+    var task = generateNewTask(_taskNameController.text);
+    await addTask(task);
     Navigator.pop(context);
   }
 
