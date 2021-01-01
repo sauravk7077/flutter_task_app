@@ -38,6 +38,9 @@ Future<void> addTask(Task task) async {
   await dataBox.put(task.uuid, task.toJson());
 }
 
+Future<Task> getTask(String uuid) =>
+    Future.value(Task.fromJson(dataBox.get(uuid)));
+
 Future<void> saveFileToCredBox(
         {@required dynamic data, @required String name}) =>
     credBox.put(name, data);
