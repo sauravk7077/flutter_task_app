@@ -8,14 +8,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_app/components/home.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_task_app/components/loading.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 // import 'package:test/test.dart';
 
 void main() {
   testWidgets('Card widget has title and description',
       (WidgetTester tester) async {
-    await tester.pumpWidget(TodoCard(task: generateNewTask("desc")));
+    await tester
+        .pumpWidget(MaterialApp(home: TodoCard(task: generateNewTask("desc"))));
     final desc = find.text('desc');
     expect(desc, findsOneWidget);
   });
