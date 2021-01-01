@@ -112,7 +112,7 @@ double urgency(Task task) {
 
   var result = 0.0;
 
-  if (task.tags?.contains('+next') ?? false) {
+  if (task.tags?.contains('next') ?? false) {
     result += 15;
   }
 
