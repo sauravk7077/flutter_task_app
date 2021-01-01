@@ -104,7 +104,6 @@ Future<void> syncData() async {
     response.payload.tasks.forEach((task) {
       addTask(Task.fromJson(json.decode(task)));
     });
-
   } on Exception catch (e) {
     print(e);
   }
