@@ -58,7 +58,9 @@ Future<void> syncData({String task}) async {
           .asUint8List();
       var taskrc = parseTaskrc(await rootBundle.loadString('fixture/.taskrc'));
       var server = taskrc['taskd.server'].split(':');
-      address = (Platform.isAndroid) ? '10.0.2.2' : server.first;
+      address = (Platform.isAndroid && server.first == 'localhost')
+          ? '10.0.2.2'
+          : server.first;
       port = int.parse(server.last);
       credentials = Credentials.fromString(taskrc['taskd.credentials']);
     } catch (_) {
