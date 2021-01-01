@@ -6,6 +6,5 @@ void main() {
     await initializeDatabase();
     expect(dataBox, isNotNull);
     expect(credBox, isNotNull);
-    expect(pemBox, isNotNull);
   });
 }

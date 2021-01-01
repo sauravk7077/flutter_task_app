@@ -26,9 +26,9 @@ class _ConfigurationState extends State<Configuration> {
   void initState() {
     super.initState();
     _controllers = <TextEditingController>[
-      TextEditingController(text: readFileFromPemBox('ca')),
-      TextEditingController(text: readFileFromPemBox('key')),
-      TextEditingController(text: readFileFromPemBox('certificate')),
+      TextEditingController(text: readFileFromCredBox('ca')),
+      TextEditingController(text: readFileFromCredBox('key')),
+      TextEditingController(text: readFileFromCredBox('certificate')),
     ];
     _credentialControllers = <TextEditingController>[
       TextEditingController(text: readFileFromCredBox('server')),
@@ -56,7 +56,7 @@ class _ConfigurationState extends State<Configuration> {
     var creds = ['server', 'port', 'credentials'];
     try {
       for (var i = 0; i < _controllers.length; i++) {
-        await saveFileToPemBox(name: pems[i], data: _controllers[i].text);
+        await saveFileToCredBox(name: pems[i], data: _controllers[i].text);
         await saveFileToCredBox(
             name: creds[i], data: _credentialControllers[i].text);
       }

@@ -8,8 +8,8 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () async {
-      print(pemBox);
-      if (pemBox == null) {
+      print(credBox);
+      if (credBox == null) {
         await Navigator.pushReplacementNamed(context, '/config');
       } else {
         unawaited(syncData());
