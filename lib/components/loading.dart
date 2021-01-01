@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pedantic/pedantic.dart';
-import 'package:flutter_task_app/shared/misc.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:flutter_task_app/shared/hive_data.dart';
 
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 2), () async {
-      print(credBox);
-      if (credBox == null) {
-        await Navigator.pushReplacementNamed(context, '/config');
-      } else {
-        await Navigator.pushReplacementNamed(context, '/home');
-      }
-    });
+    getApplicationDocumentsDirectory()
+        .then(initializeDatabase)
+        .then((_) => Navigator.pushReplacementNamed(context, '/home'));
+
     return Container(
         decoration: BoxDecoration(color: Theme.of(context).primaryColor),
         child: Column(
