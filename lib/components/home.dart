@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
             ),
           )
         ],
-        title: Text("Todo App"),
+        title: Text('Todo App'),
       ),
       body: ValueListenableBuilder(
         valueListenable: getDataBoxListenable(),
@@ -122,8 +122,8 @@ class TaskForm extends StatefulWidget {
 }
 
 class _TaskFormState extends State<TaskForm> {
-  TextEditingController _taskNameController =
-      new TextEditingController(text: '');
+  final TextEditingController _taskNameController =
+      TextEditingController(text: '');
 
   void _addData(context) async {
     var task = generateNewTask(_taskNameController.text);
@@ -139,7 +139,7 @@ class _TaskFormState extends State<TaskForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Description", style: Theme.of(context).textTheme.headline5),
+            Text('Description', style: Theme.of(context).textTheme.headline5),
             SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.only(
@@ -149,7 +149,7 @@ class _TaskFormState extends State<TaskForm> {
             SizedBox(height: 20),
             RaisedButton.icon(
               onPressed: () => _addData(context),
-              label: Text("Add"),
+              label: Text('Add'),
               icon: Icon(Icons.add),
             )
           ],

@@ -15,7 +15,7 @@ void main() {
   testWidgets('Card widget has title and description',
       (WidgetTester tester) async {
     await tester
-        .pumpWidget(MaterialApp(home: TodoCard(task: generateNewTask("desc"))));
+        .pumpWidget(MaterialApp(home: TodoCard(task: generateNewTask('desc'))));
     final desc = find.text('desc');
     expect(desc, findsOneWidget);
   });

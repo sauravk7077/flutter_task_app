@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
@@ -8,11 +9,11 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () async {
       print(pemBox);
-      if (pemBox == null)
-        Navigator.pushReplacementNamed(context, '/config');
-      else {
-        syncData();
-        Navigator.pushReplacementNamed(context, '/home');
+      if (pemBox == null) {
+        await Navigator.pushReplacementNamed(context, '/config');
+      } else {
+        unawaited(syncData());
+        await Navigator.pushReplacementNamed(context, '/home');
       }
     });
     return Container(
@@ -28,7 +29,7 @@ class Loading extends StatelessWidget {
               ),
             ),
             Text(
-              "Loading",
+              'Loading',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 14,

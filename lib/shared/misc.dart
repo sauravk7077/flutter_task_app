@@ -11,14 +11,14 @@ import 'package:uuid/uuid.dart';
 Future<String> getFileFromDialog() async {
   FileInfo fi;
   File f;
-  String data = await FilePickerWritable().openFile((fileInfo, file) async {
+  var data = await FilePickerWritable().openFile((fileInfo, file) async {
     fi = fileInfo;
     f = file;
     return await f.readAsString();
   });
-  if (fi == null)
+  if (fi == null) {
     return null;
-  else {
+  } else {
     return data;
   }
 }
@@ -37,7 +37,7 @@ Task generateNewTask(String desc) {
 Future<void> syncData() async {
   try {
     var box = Hive.box('box');
-    Directory d = await getApplicationDocumentsDirectory();
+    var d = await getApplicationDocumentsDirectory();
     var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
     var ca;
     var certificate;

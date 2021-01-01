@@ -9,7 +9,7 @@ import 'package:taskc/taskc.dart';
 Box dataBox, pemBox, credBox;
 
 void initializeDatabase() async {
-  Directory d = await getApplicationDocumentsDirectory();
+  var d = await getApplicationDocumentsDirectory();
   Hive..init(d.path);
   dataBox = await Hive.openBox('data');
   pemBox = await Hive.openBox('box');
@@ -30,12 +30,12 @@ Future<void> saveFileToPemBox(
 String readFileFromPemBox(String name) => pemBox.get(name);
 
 Future<void> addTask(Task task) async {
-  Directory d = await getApplicationDocumentsDirectory();
+  var d = await getApplicationDocumentsDirectory();
   File('${d.path}/.task/backlog.data').writeAsStringSync(
     '${json.encode(task.toJson())}\n',
     mode: FileMode.append,
   );
-  dataBox.put(task.uuid, task.toJson());
+  await dataBox.put(task.uuid, task.toJson());
 }
 
 Future<void> saveFileToCredBox(
