@@ -153,81 +153,84 @@ class TodoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        border: Border(
-                            top: _borderStyle,
-                            right: _borderStyle,
-                            bottom: _borderStyle,
-                            left: _borderStyle),
+      child: InkWell(
+        onTap: () => print(task.uuid),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          border: Border(
+                              top: _borderStyle,
+                              right: _borderStyle,
+                              bottom: _borderStyle,
+                              left: _borderStyle),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 20),
-                    Flexible(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Text.rich(
-                          TextSpan(
-                            style: GoogleFonts.firaMono(),
-                            children: [
-                              TextSpan(
-                                text: '/',
-                                style: TextStyle(
-                                  color: (Theme.of(context).brightness ==
-                                          Brightness.dark)
-                                      ? Color(0xffa9a9a9)
-                                      : Color(0xffd3d3d3),
+                      SizedBox(width: 20),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text.rich(
+                            TextSpan(
+                              style: GoogleFonts.firaMono(),
+                              children: [
+                                TextSpan(
+                                  text: '/',
+                                  style: TextStyle(
+                                    color: (Theme.of(context).brightness ==
+                                            Brightness.dark)
+                                        ? Color(0xffa9a9a9)
+                                        : Color(0xffd3d3d3),
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: task.description,
-                              ),
-                              TextSpan(
-                                text: '/',
-                                style: TextStyle(
-                                  color: (Theme.of(context).brightness ==
-                                          Brightness.dark)
-                                      ? Color(0xffa9a9a9)
-                                      : Color(0xffd3d3d3),
+                                TextSpan(
+                                  text: task.description,
                                 ),
-                              ),
-                            ],
+                                TextSpan(
+                                  text: '/',
+                                  style: TextStyle(
+                                    color: (Theme.of(context).brightness ==
+                                            Brightness.dark)
+                                        ? Color(0xffa9a9a9)
+                                        : Color(0xffd3d3d3),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${age(task.entry)}',
-                    ),
-                    Flexible(
-                      child: Text(
-                        '${urgency(task)}',
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${age(task.entry)}',
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Flexible(
+                        child: Text(
+                          '${urgency(task)}',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
