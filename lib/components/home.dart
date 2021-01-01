@@ -125,10 +125,15 @@ class TodoCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 20),
-                    Text(
-                      task.description,
-                      style: TextStyle(fontSize: 18),
-                    )
+                    Flexible(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          task.description,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 5),
