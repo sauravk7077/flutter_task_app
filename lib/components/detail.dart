@@ -76,10 +76,7 @@ class DetailCard extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                  decoration: BoxDecoration(color: Colors.grey[200]),
-                  padding: EdgeInsets.all(20),
-                  child: Text(value))
+              Container(padding: EdgeInsets.all(20), child: Text(value))
             ],
           ),
         ),
