@@ -43,29 +43,35 @@ class Home extends StatelessWidget {
               },
               icon: Icon(Icons.warning),
             ),
-          IconButton(
-              onPressed: () async {
-                try {
-                  var header = await syncData();
-                  print(header);
-                } on Exception catch (e, trace) {
-                  await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      scrollable: true,
-                      title: Text('${e.runtimeType}'),
-                      content: Column(
-                        children: [
-                          SelectableText('$e'),
-                          Divider(),
-                          SelectableText('$trace'),
-                        ],
+          Builder(
+            builder: (context) => IconButton(
+                onPressed: () async {
+                  try {
+                    var header = await syncData();
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${header['code']}: ${header['status']}'),
                       ),
-                    ),
-                  );
-                }
-              },
-              icon: Icon(Icons.sync)),
+                    );
+                  } on Exception catch (e, trace) {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        scrollable: true,
+                        title: Text('${e.runtimeType}'),
+                        content: Column(
+                          children: [
+                            SelectableText('$e'),
+                            Divider(),
+                            SelectableText('$trace'),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
+                icon: Icon(Icons.sync)),
+          ),
           IconButton(
               onPressed: () async {
                 var packageInfo = await PackageInfo.fromPlatform();
