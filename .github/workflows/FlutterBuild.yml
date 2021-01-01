@@ -19,11 +19,22 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: cirrusci/flutter:stable
+      image: bradyt/dart-task:flutter-stable
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - uses: actions/checkout@v1
+
+    # toc: https://taskwarrior.org/docs/taskserver/setup.html
+    - run: dart pub global activate --source git https://github.com/bradyt/taskd-setup-dart.git
+    - run: |
+        export "PATH=$HOME/.pub-cache/bin:$PATH"
+        taskd-setup --TASKDDATA '/var/taskd'
+      working-directory: fixture
+
+    - run: |
+        export "PATH=$HOME/.pub-cache/bin:$PATH"
+        TASKDDATA='/var/taskd' taskdctl start
 
     # Get flutter dependencies.
     - run: flutter pub get
@@ -36,3 +47,7 @@ jobs:
 
     # Run widget tests for our flutter project.
     - run: flutter test
+
+    # Check that taskwarrior can handle data
+    - run: HOME=fixture task sync
+    - run: HOME=fixture task 1 done

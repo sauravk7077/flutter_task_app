@@ -1,3 +1,5 @@
+/*-*-*-*-*/
+/.task/*.data
 /.task/*.pem
 /.taskrc
 /pki/*.pem

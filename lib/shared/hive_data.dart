@@ -11,7 +11,7 @@ Directory d;
 
 Future<void> initializeDatabase(Directory _d) async {
   d = _d;
-  Hive..init(d.path);
+  Hive..init('${d.path}/.task');
   dataBox = await Hive.openBox('data');
   credBox = await Hive.openBox('cred');
   File('${d.path}/.task/backlog.data').createSync(
