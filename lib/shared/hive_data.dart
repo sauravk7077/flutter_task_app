@@ -8,7 +8,7 @@ import 'package:taskc/taskc.dart';
 
 Box dataBox, pemBox, credBox;
 
-void initializeDatabase() async {
+Future<void> initializeDatabase() async {
   var d = await getApplicationDocumentsDirectory();
   Hive..init(d.path);
   dataBox = await Hive.openBox('data');

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
+
 import 'package:flutter_task_app/components/config.dart';
 import 'package:flutter_task_app/components/loading.dart';
 import 'package:flutter_task_app/components/home.dart';
@@ -6,7 +8,7 @@ import 'package:flutter_task_app/shared/hive_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initializeDatabase();
+  unawaited(initializeDatabase());
   runApp(MyApp());
 }
 
