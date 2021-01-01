@@ -12,7 +12,6 @@ class Loading extends StatelessWidget {
       if (credBox == null) {
         await Navigator.pushReplacementNamed(context, '/config');
       } else {
-        unawaited(syncData());
         await Navigator.pushReplacementNamed(context, '/home');
       }
     });
