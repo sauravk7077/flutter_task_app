@@ -188,8 +188,13 @@ double urgencyAge(Task task) {
 
 String age(DateTime dt) {
   var difference = DateTime.now().difference(dt);
-  if (difference.inDays > 0) {
-    return '${difference.inDays}d';
+  var days = difference.inDays;
+  if (days > 365) {
+    return '${days / 365}y';
+  } else if (days > 7) {
+    return '${days ~/ 7}w';
+  } else if (days > 0) {
+    return '${days}d';
   } else if (difference.inHours > 0) {
     return '${difference.inHours}h';
   } else if (difference.inMinutes > 0) {
