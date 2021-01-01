@@ -20,7 +20,24 @@ class Home extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () async {
-                await syncData();
+                try {
+                  await syncData();
+                } on Exception catch (e, trace) {
+                  await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      scrollable: true,
+                      title: Text('${e.runtimeType}'),
+                      content: Column(
+                        children: [
+                          SelectableText('$e'),
+                          Divider(),
+                          SelectableText('$trace'),
+                        ],
+                      ),
+                    ),
+                  );
+                }
               },
               icon: Icon(Icons.sync)),
           IconButton(
