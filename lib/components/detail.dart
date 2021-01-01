@@ -31,7 +31,12 @@ class Detail extends StatelessWidget {
             }.entries)
               DetailCard(
                 desc: entry.key,
-                value: entry.value != null ? entry.value.toString() : 'Nil',
+                value: entry.value != null
+                    ? ((entry.value is DateTime)
+                        // ignore: avoid_as
+                        ? '${(entry.value as DateTime).toLocal()}'
+                        : '${entry.value}')
+                    : 'Nil',
               ),
           ],
         ),
