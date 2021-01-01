@@ -32,7 +32,7 @@ Task generateNewTask(String desc) {
       priority: '0');
 }
 
-Future<void> syncData() async {
+Future<Map> syncData() async {
   var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
   var ca;
   var certificate;
@@ -99,6 +99,8 @@ Future<void> syncData() async {
   response.payload.tasks.forEach((task) {
     addTask(Task.fromJson(json.decode(task)));
   });
+
+  return response.header;
 }
 
 double urgency(Task task) {

@@ -46,7 +46,8 @@ class Home extends StatelessWidget {
           IconButton(
               onPressed: () async {
                 try {
-                  await syncData();
+                  var header = await syncData();
+                  print(header);
                 } on Exception catch (e, trace) {
                   await showDialog(
                     context: context,
