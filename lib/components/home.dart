@@ -55,6 +55,11 @@ class Home extends StatelessWidget {
                       ),
                     );
                   } on Exception catch (e, trace) {
+                    print(e);
+                    var hasTrace = '$trace'.isNotEmpty;
+                    if (hasTrace) {
+                      print(trace);
+                    }
                     await showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -63,8 +68,14 @@ class Home extends StatelessWidget {
                         content: Column(
                           children: [
                             SelectableText('$e'),
-                            Divider(),
-                            SelectableText('$trace'),
+                            if (hasTrace) ...[
+                              ExpansionTile(
+                                title: Text('StackTrace'),
+                                children: [
+                                  SelectableText('$trace'),
+                                ],
+                              ),
+                            ]
                           ],
                         ),
                       ),
