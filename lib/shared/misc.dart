@@ -33,78 +33,72 @@ Task generateNewTask(String desc) {
 }
 
 Future<void> syncData() async {
+  var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
+  var ca;
+  var certificate;
+  var key;
+  var address;
+  var port;
+  var credentials;
   try {
-    var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
-    var ca;
-    var certificate;
-    var key;
-    var address;
-    var port;
-    var credentials;
-    try {
-      ca = (await rootBundle.load('fixture/.task/ca.cert.pem'))
-          .buffer
-          .asUint8List();
-      certificate = (await rootBundle.load('fixture/.task/first_last.cert.pem'))
-          .buffer
-          .asUint8List();
-      key = (await rootBundle.load('fixture/.task/first_last.key.pem'))
-          .buffer
-          .asUint8List();
-      var taskrc = parseTaskrc(await rootBundle.loadString('fixture/.taskrc'));
-      var server = taskrc['taskd.server'].split(':');
-      address = (Platform.isAndroid && server.first == 'localhost')
-          ? '10.0.2.2'
-          : server.first;
-      port = int.parse(server.last);
-      credentials = Credentials.fromString(taskrc['taskd.credentials']);
-    } catch (_) {
-      ca = utf8.encode(readFileFromCredBox('ca'));
-      certificate = utf8.encode(readFileFromCredBox('certificate'));
-      key = utf8.encode(readFileFromCredBox('key'));
-      address = readFileFromCredBox('server');
-      port = int.parse(readFileFromCredBox('port'));
-      credentials = Credentials.fromString(readFileFromCredBox('credentials'));
-    }
-    var connection = Connection(
-        address: address,
-        port: port,
-        context: SecurityContext()
-          ..setTrustedCertificatesBytes(ca)
-          ..useCertificateChainBytes(certificate)
-          ..usePrivateKeyBytes(key),
-        onBadCertificate: (_) => true);
-    var response = await synchronize(
-        connection: connection, credentials: credentials, payload: payload);
-    print(response.header);
-    for (var task in response.payload.tasks) {
-      print(json.decode(task)['description']);
-    }
-    switch (response.header['code']) {
-      case '200':
-        response.payload.tasks.forEach(
-          (task) => addTask(Task.fromJson(json.decode(task))),
-        );
-        File('${d.path}/.task/backlog.data').writeAsStringSync(
-          '${response.payload.userKey}\n',
-        );
-        break;
-      case '201':
-        File('${d.path}/.task/backlog.data').writeAsStringSync(
-          '${response.payload.userKey}\n',
-        );
-        break;
-      default:
-        throw Exception(response.header);
-    }
-    response.payload.tasks.forEach((task) {
-      addTask(Task.fromJson(json.decode(task)));
-    });
-  } on SocketException catch (e) {
-    print(e.address);
-  } on Exception catch (e) {
-    print(e);
+    ca = (await rootBundle.load('fixture/.task/ca.cert.pem'))
+        .buffer
+        .asUint8List();
+    certificate = (await rootBundle.load('fixture/.task/first_last.cert.pem'))
+        .buffer
+        .asUint8List();
+    key = (await rootBundle.load('fixture/.task/first_last.key.pem'))
+        .buffer
+        .asUint8List();
+    var taskrc = parseTaskrc(await rootBundle.loadString('fixture/.taskrc'));
+    var server = taskrc['taskd.server'].split(':');
+    address = (Platform.isAndroid && server.first == 'localhost')
+        ? '10.0.2.2'
+        : server.first;
+    port = int.parse(server.last);
+    credentials = Credentials.fromString(taskrc['taskd.credentials']);
+  } catch (_) {
+    ca = utf8.encode(readFileFromCredBox('ca'));
+    certificate = utf8.encode(readFileFromCredBox('certificate'));
+    key = utf8.encode(readFileFromCredBox('key'));
+    address = readFileFromCredBox('server');
+    port = int.parse(readFileFromCredBox('port'));
+    credentials = Credentials.fromString(readFileFromCredBox('credentials'));
   }
+  var connection = Connection(
+      address: address,
+      port: port,
+      context: SecurityContext()
+        ..setTrustedCertificatesBytes(ca)
+        ..useCertificateChainBytes(certificate)
+        ..usePrivateKeyBytes(key),
+      onBadCertificate: (_) => true);
+  var response = await synchronize(
+      connection: connection, credentials: credentials, payload: payload);
+  print(response.header);
+  for (var task in response.payload.tasks) {
+    print(json.decode(task)['description']);
+  }
+  switch (response.header['code']) {
+    case '200':
+      response.payload.tasks.forEach(
+        (task) => addTask(Task.fromJson(json.decode(task))),
+      );
+      File('${d.path}/.task/backlog.data').writeAsStringSync(
+        '${response.payload.userKey}\n',
+      );
+      break;
+    case '201':
+      File('${d.path}/.task/backlog.data').writeAsStringSync(
+        '${response.payload.userKey}\n',
+      );
+      break;
+    default:
+      throw Exception(response.header);
+  }
+  response.payload.tasks.forEach((task) {
+    addTask(Task.fromJson(json.decode(task)));
+  });
 }
 
 double urgency(Task task) {
