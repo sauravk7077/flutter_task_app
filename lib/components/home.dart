@@ -108,6 +108,8 @@ class Home extends StatelessWidget {
 }
 
 class TodoCard extends StatelessWidget {
+  const TodoCard({@required this.task});
+
   final Task task;
 
   static final titleStyle =
@@ -115,8 +117,6 @@ class TodoCard extends StatelessWidget {
 
   static final _borderStyle =
       BorderSide(color: Colors.grey[200], width: 2, style: BorderStyle.solid);
-
-  const TodoCard({@required this.task});
 
   @override
   Widget build(BuildContext context) {
