@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_task_app/shared/misc.dart';
-import 'package:flutter_task_app/shared/hive_data.dart';
-import 'package:intl/intl.dart';
-import 'package:taskc/taskc.dart';
 import 'package:package_info/package_info.dart';
+import 'package:taskc/taskc.dart';
+
+import 'package:flutter_task_app/shared/hive_data.dart';
+import 'package:flutter_task_app/shared/misc.dart';
 
 class Home extends StatelessWidget {
   final String title =
@@ -48,7 +50,16 @@ class Home extends StatelessWidget {
               .map((key, value) => MapEntry(key, Task.fromJson(value)))
               .entries
               .where((entry) => entry.value.status == 'pending')
-              .toList();
+              .toList()
+                ..sort((a, b) {
+                  if (urgency(a.value) > urgency(b.value)) {
+                    return -1;
+                  } else if (urgency(a.value) == urgency(b.value)) {
+                    return 0;
+                  } else {
+                    return 1;
+                  }
+                });
 
           return Container(
             margin: EdgeInsets.all(5),
@@ -122,7 +133,7 @@ class TodoCard extends StatelessWidget {
                 Container(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    DateFormat('kk:ss').format(task.modified.toLocal()),
+                    '${urgency(task)}',
                   ),
                 ),
               ],
