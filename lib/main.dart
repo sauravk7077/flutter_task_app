@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.black,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      darkTheme: ThemeData.dark(),
       routes: {
         '/': (context) => Loading(),
         '/home': (context) => Home(),
