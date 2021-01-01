@@ -61,13 +61,15 @@ class Home extends StatelessWidget {
                   }
                 });
 
-          return Container(
-            margin: EdgeInsets.all(5),
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (buildContext, i) {
-                return TodoCard(task: tasks.elementAt(i).value);
-              },
+          return Scrollbar(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (buildContext, i) {
+                  return TodoCard(task: tasks.elementAt(i).value);
+                },
+              ),
             ),
           );
         },
