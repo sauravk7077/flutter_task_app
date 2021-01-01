@@ -9,6 +9,7 @@ import 'package:taskc/taskc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:flutter_task_app/shared/hive_data.dart';
+import 'package:flutter_task_app/shared/errors/taskd_exception.dart';
 
 Future<String> getFileFromDialog() async {
   FileInfo fi;
@@ -98,7 +99,7 @@ Future<Map> syncData() async {
       );
       break;
     default:
-      throw Exception(response.header);
+      throw TaskdException(response.header);
   }
   for (var task in response.payload.tasks) {
     await addTask(Task.fromJson(json.decode(task)));

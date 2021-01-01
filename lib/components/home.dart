@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:taskc/taskc.dart';
 
+import 'package:flutter_task_app/shared/errors/taskd_exception.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 
@@ -52,6 +53,30 @@ class Home extends StatelessWidget {
                     Scaffold.of(context).showSnackBar(
                       SnackBar(
                         content: Text('${header['code']}: ${header['status']}'),
+                      ),
+                    );
+                  } on TaskdException catch (e, trace) {
+                    print(e);
+                    var hasTrace = '$trace'.isNotEmpty;
+                    if (hasTrace) {
+                      print(trace);
+                    }
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        scrollable: true,
+                        title: Text('${e.runtimeType}'),
+                        content: Column(
+                          children: [
+                            SelectableText(
+                              '${e.header['code']}: ${e.header['status']}',
+                            ),
+                            // Divider(),
+                            // SelectableText(
+                            //   'Compare: https://taskwarrior.org/docs/design/protocol.html',
+                            // ),
+                          ],
+                        ),
                       ),
                     );
                   } on Exception catch (e, trace) {
