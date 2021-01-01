@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:taskc/taskc.dart';
 
 Box dataBox, credBox;
 
-Future<void> initializeDatabase() async {
-  var d = await getApplicationDocumentsDirectory();
+Directory d;
+
+Future<void> initializeDatabase(Directory _d) async {
+  d = _d;
   Hive..init(d.path);
   dataBox = await Hive.openBox('data');
   credBox = await Hive.openBox('cred');
@@ -23,7 +24,6 @@ ValueListenable<Box<dynamic>> getDataBoxListenable() {
 }
 
 Future<void> addTask(Task task) async {
-  var d = await getApplicationDocumentsDirectory();
   File('${d.path}/.task/backlog.data').writeAsStringSync(
     '${json.encode(task.toJson())}\n',
     mode: FileMode.append,

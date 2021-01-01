@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:taskc/taskc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,7 +34,6 @@ Task generateNewTask(String desc) {
 
 Future<void> syncData() async {
   try {
-    var d = await getApplicationDocumentsDirectory();
     var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
     var ca;
     var certificate;

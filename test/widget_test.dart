@@ -8,8 +8,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:flutter_task_app/components/config.dart';
 import 'package:flutter_task_app/components/home.dart';
@@ -27,14 +27,9 @@ void main() {
 
   testWidgets('Test configuration page in small window',
       (WidgetTester tester) async {
-    const channel = MethodChannel('plugins.flutter.io/path_provider');
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return Directory.systemTemp.path;
-    });
-
     await tester.runAsync(() async {
       await tester.binding.setSurfaceSize(Size(320, 480));
-      await initializeDatabase();
+      await initializeDatabase(Directory('../fixture/${Uuid().v1()}'));
       await tester.pumpWidget(MaterialApp(home: Configuration()));
     });
 
