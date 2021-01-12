@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_app/shared/misc.dart';
-import 'package:taskc/taskc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -11,6 +12,8 @@ class Home extends StatelessWidget {
           FlatButton.icon(
               onPressed: () async {
                 await syncData();
+                var dataBox = Hive.box('data');
+                print(dataBox.get('todos'));
               },
               icon: Icon(Icons.sync, color: Colors.white),
               label: Text(
@@ -18,7 +21,10 @@ class Home extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               )),
           FlatButton.icon(
-            icon: Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
             onPressed: () {
               Navigator.pushNamed(context, '/config');
             },
@@ -30,20 +36,27 @@ class Home extends StatelessWidget {
         ],
         title: Text("Todo App"),
       ),
-      body: Container(
-        margin: EdgeInsets.all(5),
-        child: Column(
-          children: [],
+      body: ValueListenableBuilder(
+        valueListenable: Hive.box('data').listenable(),
+        builder: (context, box, _) => Container(
+          margin: EdgeInsets.all(5),
+          child: ListView.builder(
+            itemCount: box.get('todos').length,
+            itemBuilder: (buildContext, i) {
+              return TodoCard(desc: box.get('todos')[i], title: "Task");
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          showModalBottomSheet(
+          await showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               builder: (context) {
                 return TaskForm();
               });
+          await syncData();
         },
         child: Icon(Icons.add),
       ),

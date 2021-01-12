@@ -38,14 +38,15 @@ final String cred = "inthe_am/sauravk865/14d86820-40db-4291-9725-ea91573285fc";
 Task generateNewTask(String desc) {
   var time = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
   return Task(
-    status: 'pending',
-    uuid: Uuid().v1(),
-    entry: time,
-    description: desc,
-  );
+      status: 'pending',
+      uuid: Uuid().v1(),
+      entry: time,
+      description: desc,
+      modified: time,
+      priority: '0');
 }
 
-Future<List<Task>> syncData({String task}) async {
+Future<void> syncData({String task}) async {
   try {
     var box = Hive.box('box');
     var userKey = await readFile('userKey');
@@ -63,14 +64,16 @@ Future<List<Task>> syncData({String task}) async {
     var response = await synchronize(
         connection: connection, credentials: credentials, payload: payload);
     print(response.header);
-    print(response.payload.userKey);
     await saveFile(name: 'userKey', data: response.payload.userKey);
     for (var task in response.payload.tasks) {
       print(task.description);
     }
-    return response.payload.tasks;
+    if (task == null) {
+      var dataBox = await Hive.box('data');
+      await dataBox.put('todos',
+          response.payload.tasks.map((task) => task.description).toList());
+    }
   } on Exception catch (e) {
     print(e);
-    return null;
   }
 }

@@ -11,6 +11,7 @@ void main() async {
   Directory d = await getApplicationDocumentsDirectory();
   Hive..init(d.path);
   await Hive.openBox('box');
+  await Hive.openBox('data');
   runApp(MyApp());
 }
 
