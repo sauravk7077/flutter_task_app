@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker_writable/file_picker_writable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:hive/hive.dart';
 import 'package:taskc/taskc.dart';
 import 'package:uuid/uuid.dart';
@@ -19,16 +19,6 @@ Future<String> getFileFromDialog() async {
   else {
     return data;
   }
-}
-
-Future<void> saveFile({@required String data, @required String name}) async {
-  var box = await Hive.openBox('box');
-  await box.put(name, data);
-}
-
-Future<String> readFile(String name) async {
-  var box = await Hive.openBox('box');
-  return box.get(name);
 }
 
 final String server = "inthe.am";
@@ -49,7 +39,7 @@ Task generateNewTask(String desc) {
 Future<void> syncData({String task}) async {
   try {
     var box = Hive.box('box');
-    var userKey = await readFile('userKey');
+    var userKey = await readFileFromBoxBox('userKey');
     var payload;
     if (task != null)
       payload = Payload(tasks: <Task>[generateNewTask(task)], userKey: userKey);
@@ -64,14 +54,15 @@ Future<void> syncData({String task}) async {
     var response = await synchronize(
         connection: connection, credentials: credentials, payload: payload);
     print(response.header);
-    await saveFile(name: 'userKey', data: response.payload.userKey);
+    await saveFileToBoxBox(name: 'userKey', data: response.payload.userKey);
     for (var task in response.payload.tasks) {
       print(task.description);
     }
     if (task == null) {
-      var dataBox = await Hive.box('data');
-      await dataBox.put('todos',
-          response.payload.tasks.map((task) => task.description).toList());
+      await saveFileToDataBox(
+          name: 'todos',
+          data:
+              response.payload.tasks.map((task) => task.description).toList());
     }
   } on Exception catch (e) {
     print(e);

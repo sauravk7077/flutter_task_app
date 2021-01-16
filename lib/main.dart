@@ -1,17 +1,12 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_app/components/config.dart';
 import 'package:flutter_task_app/components/loading.dart';
 import 'package:flutter_task_app/components/home.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_task_app/shared/hive_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Directory d = await getApplicationDocumentsDirectory();
-  Hive..init(d.path);
-  await Hive.openBox('box');
-  await Hive.openBox('data');
+  initializeDatabase();
   runApp(MyApp());
 }
 

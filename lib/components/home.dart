@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_app/shared/misc.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_task_app/shared/hive_data.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -12,8 +11,6 @@ class Home extends StatelessWidget {
           FlatButton.icon(
               onPressed: () async {
                 await syncData();
-                var dataBox = Hive.box('data');
-                print(dataBox.get('todos'));
               },
               icon: Icon(Icons.sync, color: Colors.white),
               label: Text(
@@ -37,13 +34,13 @@ class Home extends StatelessWidget {
         title: Text("Todo App"),
       ),
       body: ValueListenableBuilder(
-        valueListenable: Hive.box('data').listenable(),
+        valueListenable: getDataBoxListenable(),
         builder: (context, box, _) => Container(
           margin: EdgeInsets.all(5),
           child: ListView.builder(
             itemCount: box.get('todos').length,
             itemBuilder: (buildContext, i) {
-              return TodoCard(desc: box.get('todos')[i], title: "Task");
+              return TodoCard(desc: box.get('todos')[i]);
             },
           ),
         ),
@@ -65,13 +62,12 @@ class Home extends StatelessWidget {
 }
 
 class TodoCard extends StatelessWidget {
-  final String title;
   final String desc;
 
   static final titleStyle =
       TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
-  const TodoCard({@required this.title, @required this.desc});
+  const TodoCard({@required this.desc});
 
   @override
   Widget build(BuildContext context) {
@@ -80,16 +76,11 @@ class TodoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              title,
-              style: titleStyle,
-              textDirection: TextDirection.ltr,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(desc, textDirection: TextDirection.ltr),
+            padding: const EdgeInsets.all(20.0),
+            child: Text(desc,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
+                textDirection: TextDirection.ltr),
           )
         ],
       ),

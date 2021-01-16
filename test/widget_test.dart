@@ -14,11 +14,8 @@ import 'package:flutter_task_app/components/loading.dart';
 void main() {
   testWidgets('Card widget has title and description',
       (WidgetTester tester) async {
-    await tester.pumpWidget(TodoCard(title: 'title', desc: 'desc'));
-    final title = find.text('title');
+    await tester.pumpWidget(TodoCard(desc: 'desc'));
     final desc = find.text('desc');
-
-    expect(title, findsOneWidget);
     expect(desc, findsOneWidget);
   });
 }

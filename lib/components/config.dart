@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 
 class Configuration extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ConfigurationState extends State<Configuration> {
   void _saveToBox() async {
     try {
       for (int i = 0; i < _controllers.length; i++) {
-        await saveFile(name: i.toString(), data: _controllers[i].text);
+        await saveFileToBoxBox(name: i.toString(), data: _controllers[i].text);
       }
     } on Exception catch (e) {
       print(e);

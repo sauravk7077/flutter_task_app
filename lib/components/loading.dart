@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_task_app/shared/hive_data.dart';
 
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () async {
-      var box = await Hive.box('box');
-      if (box == null)
+      if (boxBox == null)
         Navigator.pushReplacementNamed(context, '/config');
       else
         Navigator.pushReplacementNamed(context, '/home');
