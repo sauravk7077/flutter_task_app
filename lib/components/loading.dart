@@ -12,21 +12,21 @@ class Loading extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/home');
     });
     return Container(
-        decoration: BoxDecoration(color: Colors.blue),
+        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               margin: EdgeInsets.all(10),
               child: LoadingFlipping.square(
-                backgroundColor: Colors.white,
-                borderColor: Colors.white,
+                backgroundColor: Colors.black,
+                borderColor: Colors.black,
               ),
             ),
             Text(
               "Loading",
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 14,
               ),
               textDirection: TextDirection.ltr,

@@ -12,22 +12,19 @@ class Home extends StatelessWidget {
               onPressed: () async {
                 await syncData();
               },
-              icon: Icon(Icons.sync, color: Colors.white),
+              icon: Icon(Icons.sync),
               label: Text(
                 'Sync',
-                style: TextStyle(color: Colors.white),
               )),
           FlatButton.icon(
             icon: Icon(
               Icons.settings,
-              color: Colors.white,
             ),
             onPressed: () {
               Navigator.pushNamed(context, '/config');
             },
             label: Text(
               'Settings',
-              style: TextStyle(color: Colors.white),
             ),
           )
         ],
@@ -77,10 +74,13 @@ class TodoCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text(desc,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-                textDirection: TextDirection.ltr),
+            child: Row(
+              children: [
+                Text(desc,
+                    style: TextStyle(fontSize: 18),
+                    textDirection: TextDirection.ltr)
+              ],
+            ),
           )
         ],
       ),
@@ -118,7 +118,7 @@ class _TaskFormState extends State<TaskForm> {
               child: TextFormField(controller: _taskNameController),
             ),
             SizedBox(height: 20),
-            ElevatedButton.icon(
+            RaisedButton.icon(
               onPressed: () => _addData(context),
               label: Text("Add"),
               icon: Icon(Icons.add),

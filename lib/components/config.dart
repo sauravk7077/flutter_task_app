@@ -48,7 +48,7 @@ class _ConfigurationState extends State<Configuration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue[100],
+        backgroundColor: Theme.of(context).primaryColor,
         body: SafeArea(
             child: Column(children: [
           Container(
@@ -101,8 +101,14 @@ class _ConfigurationState extends State<Configuration> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ElevatedButton(
-                          child: Text("Save"), onPressed: _saveToBox),
+                      MaterialButton(
+                        child: Text(
+                          "Save",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: _saveToBox,
+                        color: Theme.of(context).accentColor,
+                      ),
                       RaisedButton(
                           child: Text("Close"),
                           onPressed: () {
