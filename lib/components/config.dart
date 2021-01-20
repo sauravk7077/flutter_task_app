@@ -11,18 +11,29 @@ class Configuration extends StatefulWidget {
 }
 
 class _ConfigurationState extends State<Configuration> {
+  final borderSide =
+      BorderSide(color: Colors.black, width: 2, style: BorderStyle.solid);
   final GlobalKey _formkey = GlobalKey();
+  final GlobalKey _credFormkey = GlobalKey();
   var _controllers = <TextEditingController>[
     TextEditingController(text: ''),
     TextEditingController(text: ''),
-    TextEditingController(text: '')
+    TextEditingController(text: ''),
+  ];
+  var _credentialControllers = <TextEditingController>[
+    TextEditingController(text: ''),
+    TextEditingController(text: ''),
+    TextEditingController(text: ''),
   ];
 
   static List<String> _titles = <String>[
     "Input the CA File",
     "Input the Client Key File",
-    "Input the Client Certificat File"
+    "Input the Client Certificat File",
   ];
+
+  static InputDecoration _inputDeco =
+      InputDecoration(enabledBorder: OutlineInputBorder());
 
   void _importAndSetData(int idx) async {
     try {
@@ -45,79 +56,134 @@ class _ConfigurationState extends State<Configuration> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: SafeArea(
-            child: Column(children: [
-          Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: Text("Setting",
-                  style: Theme.of(context).textTheme.headline3)),
-          Divider(
-            height: 40,
-            thickness: 2,
-            indent: 20,
-            endIndent: 20,
-          ),
-          Form(
-            key: _formkey,
-            child: Column(
-              children: [
-                ListView.builder(
-                  itemCount: _titles.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: Configuration._margin2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget firstTab() {
+    return Column(children: [
+      Form(
+        key: _formkey,
+        child: Column(
+          children: [
+            ListView.builder(
+              itemCount: _titles.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: Configuration._margin2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        child: Text("${_titles[index]}:"),
+                        padding: Configuration._margin2,
+                      ),
+                      Row(
                         children: [
-                          Text("${_titles[index]}:"),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                    padding: Configuration._margin2,
-                                    child: TextFormField(
-                                      controller: _controllers[index],
-                                    )),
-                              ),
-                              MaterialButton(
-                                onPressed: () {
-                                  _importAndSetData(index);
-                                },
-                                child: Text("Import"),
-                              )
-                            ],
+                          Expanded(
+                            child: Container(
+                                padding: Configuration._margin2,
+                                child: TextFormField(
+                                  decoration: _inputDeco,
+                                  controller: _controllers[index],
+                                )),
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              _importAndSetData(index);
+                            },
+                            child: Text("Import"),
                           )
                         ],
-                      ),
-                    );
-                  },
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+            //Ca File
+          ],
+        ),
+      ),
+    ]);
+  }
+
+  Widget secondTab() {
+    return Container(
+      margin: Configuration._margin1,
+      child: Form(
+        key: _credFormkey,
+        child: Column(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Server",
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: _credentialControllers[0],
+                decoration: _inputDeco,
+              )
+            ],
+          ),
+          SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Port",
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                controller: _credentialControllers[1],
+                decoration: _inputDeco,
+              )
+            ],
+          ),
+          SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Credentials",
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: _credentialControllers[2],
+                decoration: _inputDeco,
+              )
+            ],
+          )
+        ]),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).primaryColor,
+          appBar: AppBar(
+            title: Text("Settings"),
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  icon: Icon(Icons.settings),
+                  text: "Certificates",
                 ),
-                //Ca File
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      MaterialButton(
-                        child: Text(
-                          "Save",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: _saveToBox,
-                        color: Theme.of(context).accentColor,
-                      ),
-                      RaisedButton(
-                          child: Text("Close"),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          })
-                    ])
+                Tab(
+                  icon: Icon(Icons.verified_user),
+                  text: "Credentials",
+                )
               ],
             ),
           ),
-        ])));
+          body: TabBarView(children: [firstTab(), secondTab()]),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.save),
+            onPressed: _saveToBox,
+          ),
+        ));
   }
 }

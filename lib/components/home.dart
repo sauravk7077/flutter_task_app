@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
+import 'package:intl/intl.dart';
+import 'package:taskc/taskc.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -37,7 +39,7 @@ class Home extends StatelessWidget {
           child: ListView.builder(
             itemCount: box.get('todos').length,
             itemBuilder: (buildContext, i) {
-              return TodoCard(desc: box.get('todos')[i]);
+              return TodoCard(task: Task.fromJson(box.get('todos')[i]));
             },
           ),
         ),
@@ -59,12 +61,15 @@ class Home extends StatelessWidget {
 }
 
 class TodoCard extends StatelessWidget {
-  final String desc;
+  final Task task;
 
   static final titleStyle =
       TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
-  const TodoCard({@required this.desc});
+  static final _borderStyle =
+      BorderSide(color: Colors.grey[200], width: 2, style: BorderStyle.solid);
+
+  const TodoCard({@required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +79,34 @@ class TodoCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Row(
+            child: Column(
               children: [
-                Text(desc,
-                    style: TextStyle(fontSize: 18),
-                    textDirection: TextDirection.ltr)
+                Row(
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        border: Border(
+                            top: _borderStyle,
+                            right: _borderStyle,
+                            bottom: _borderStyle,
+                            left: _borderStyle),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      task.description,
+                      style: TextStyle(fontSize: 18),
+                    )
+                  ],
+                ),
+                SizedBox(height: 5),
+                Container(
+                  alignment: Alignment.bottomRight,
+                  child: Text(DateFormat('kk:ss').format(task.modified)),
+                )
               ],
             ),
           )

@@ -61,8 +61,7 @@ Future<void> syncData({String task}) async {
     if (task == null) {
       await saveFileToDataBox(
           name: 'todos',
-          data:
-              response.payload.tasks.map((task) => task.description).toList());
+          data: response.payload.tasks.map((task) => task.toJson()).toList());
     }
   } on Exception catch (e) {
     print(e);

@@ -21,7 +21,7 @@ Future<void> saveFileToBoxBox(
         {@required dynamic data, @required String name}) async =>
     await boxBox.put(name, data);
 
-Future<dynamic> readFileFromBoxBox(String name) async => await boxBox.get(name);
+Future<String> readFileFromBoxBox(String name) async => await boxBox.get(name);
 
 Future<void> saveFileToDataBox(
         {@required dynamic data, @required String name}) async =>
