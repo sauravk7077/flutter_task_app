@@ -21,10 +21,6 @@ Future<String> getFileFromDialog() async {
   }
 }
 
-final String server = "inthe.am";
-final int port = 53589;
-final String cred = "inthe_am/sauravk865/14d86820-40db-4291-9725-ea91573285fc";
-
 Task generateNewTask(String desc) {
   var time = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
   return Task(
@@ -39,18 +35,18 @@ Task generateNewTask(String desc) {
 Future<void> syncData({String task}) async {
   try {
     var box = Hive.box('box');
-    var userKey = await readFileFromBoxBox('userKey');
+    var userKey = readFileFromBoxBox('userKey');
     var payload;
     if (task != null)
       payload = Payload(tasks: <Task>[generateNewTask(task)], userKey: userKey);
     var connection = Connection(
-        address: server,
-        port: port,
+        address: readFileFromCredBox('0'),
+        port: int.parse(readFileFromCredBox('1')),
         context: SecurityContext()
           ..useCertificateChainBytes(utf8.encode(box.get('2')))
           ..usePrivateKeyBytes(utf8.encode(box.get('1'))),
         onBadCertificate: (_) => true);
-    var credentials = Credentials.fromString(cred);
+    var credentials = Credentials.fromString(readFileFromCredBox('2'));
     var response = await synchronize(
         connection: connection, credentials: credentials, payload: payload);
     print(response.header);

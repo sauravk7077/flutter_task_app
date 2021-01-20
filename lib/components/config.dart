@@ -15,22 +15,26 @@ class _ConfigurationState extends State<Configuration> {
       BorderSide(color: Colors.black, width: 2, style: BorderStyle.solid);
   final GlobalKey _formkey = GlobalKey();
   final GlobalKey _credFormkey = GlobalKey();
-  var _controllers = <TextEditingController>[
-    TextEditingController(text: ''),
-    TextEditingController(text: ''),
-    TextEditingController(text: ''),
-  ];
-  var _credentialControllers = <TextEditingController>[
-    TextEditingController(text: ''),
-    TextEditingController(text: ''),
-    TextEditingController(text: ''),
-  ];
-
+  var _controllers, _credentialControllers;
   static List<String> _titles = <String>[
     "Input the CA File",
     "Input the Client Key File",
     "Input the Client Certificat File",
   ];
+
+  void initState() {
+    super.initState();
+    _controllers = <TextEditingController>[
+      TextEditingController(text: readFileFromBoxBox('0')),
+      TextEditingController(text: readFileFromBoxBox('1')),
+      TextEditingController(text: readFileFromBoxBox('2')),
+    ];
+    _credentialControllers = <TextEditingController>[
+      TextEditingController(text: readFileFromCredBox('0')),
+      TextEditingController(text: readFileFromCredBox('1')),
+      TextEditingController(text: readFileFromCredBox('2')),
+    ];
+  }
 
   static InputDecoration _inputDeco =
       InputDecoration(enabledBorder: OutlineInputBorder());
@@ -50,6 +54,8 @@ class _ConfigurationState extends State<Configuration> {
     try {
       for (int i = 0; i < _controllers.length; i++) {
         await saveFileToBoxBox(name: i.toString(), data: _controllers[i].text);
+        await saveFileToCredBox(
+            name: i.toString(), data: _credentialControllers[i].text);
       }
     } on Exception catch (e) {
       print(e);
@@ -148,6 +154,7 @@ class _ConfigurationState extends State<Configuration> {
               ),
               SizedBox(height: 10),
               TextFormField(
+                obscureText: true,
                 controller: _credentialControllers[2],
                 decoration: _inputDeco,
               )
@@ -169,7 +176,7 @@ class _ConfigurationState extends State<Configuration> {
             bottom: TabBar(
               tabs: [
                 Tab(
-                  icon: Icon(Icons.settings),
+                  icon: Icon(Icons.security),
                   text: "Certificates",
                 ),
                 Tab(
