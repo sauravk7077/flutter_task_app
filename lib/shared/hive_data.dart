@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:taskc/taskc.dart';
 
 Box dataBox, pemBox, credBox;
 
@@ -12,6 +14,9 @@ void initializeDatabase() async {
   dataBox = await Hive.openBox('data');
   pemBox = await Hive.openBox('box');
   credBox = await Hive.openBox('cred');
+  File('${d.path}/.task/backlog.data').createSync(
+    recursive: true,
+  );
 }
 
 ValueListenable<Box<dynamic>> getDataBoxListenable() {
@@ -24,11 +29,14 @@ Future<void> saveFileToPemBox(
 
 String readFileFromPemBox(String name) => pemBox.get(name);
 
-Future<void> saveFileToDataBox(
-        {@required dynamic data, @required String name}) async =>
-    await dataBox.put(name, data);
-
-dynamic readFileFromDataBox(String name) => dataBox.get(name);
+Future<void> addTask(Task task) async {
+  Directory d = await getApplicationDocumentsDirectory();
+  File('${d.path}/.task/backlog.data').writeAsStringSync(
+    '${json.encode(task.toJson())}\n',
+    mode: FileMode.append,
+  );
+  dataBox.put(task.uuid, task.toJson());
+}
 
 Future<void> saveFileToCredBox(
         {@required dynamic data, @required String name}) async =>
