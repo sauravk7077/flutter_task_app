@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker_writable/file_picker_writable.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:hive/hive.dart';
 import 'package:taskc/taskc.dart';
@@ -39,14 +40,43 @@ Future<void> syncData({String task}) async {
     var payload;
     if (task != null)
       payload = Payload(tasks: <Task>[generateNewTask(task)], userKey: userKey);
+    var ca;
+    var certificate;
+    var key;
+    var address;
+    var port;
+    var credentials;
+    try {
+      ca = (await rootBundle.load('fixture/.task/ca.cert.pem'))
+          .buffer
+          .asUint8List();
+      certificate = (await rootBundle.load('fixture/.task/first_last.cert.pem'))
+          .buffer
+          .asUint8List();
+      key = (await rootBundle.load('fixture/.task/first_last.key.pem'))
+          .buffer
+          .asUint8List();
+      var taskrc = parseTaskrc(await rootBundle.loadString('fixture/.taskrc'));
+      var server = taskrc['taskd.server'].split(':');
+      address = (Platform.isAndroid) ? '10.0.2.2' : server.first;
+      port = int.parse(server.last);
+      credentials = Credentials.fromString(taskrc['taskd.credentials']);
+    } catch (_) {
+      ca = utf8.encode(await box.get('0'));
+      certificate = utf8.encode(await box.get('2'));
+      key = utf8.encode(await box.get('1'));
+      address = readFileFromCredBox('0');
+      port = int.parse(readFileFromCredBox('1'));
+      credentials = Credentials.fromString(readFileFromCredBox('2'));
+    }
     var connection = Connection(
-        address: readFileFromCredBox('0'),
-        port: int.parse(readFileFromCredBox('1')),
+        address: address,
+        port: port,
         context: SecurityContext()
-          ..useCertificateChainBytes(utf8.encode(box.get('2')))
-          ..usePrivateKeyBytes(utf8.encode(box.get('1'))),
+          ..setTrustedCertificatesBytes(ca)
+          ..useCertificateChainBytes(certificate)
+          ..usePrivateKeyBytes(key),
         onBadCertificate: (_) => true);
-    var credentials = Credentials.fromString(readFileFromCredBox('2'));
     var response = await synchronize(
         connection: connection, credentials: credentials, payload: payload);
     print(response.header);
