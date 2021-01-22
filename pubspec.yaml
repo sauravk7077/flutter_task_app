@@ -27,7 +27,7 @@ dependencies:
   taskc:
     git:
       url: git://github.com/bradyt/taskd-client-dart.git
-      ref: 229be07ad7ea93e61eefd8ab3082fa5a67d86bae
+      ref: 3f87abb9c4ce4aaaa4fbb5848bfafbd8a0cfc84f
   file_picker_writable: ^1.2.0+1
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1

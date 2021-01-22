@@ -573,8 +573,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "229be07ad7ea93e61eefd8ab3082fa5a67d86bae"
-      resolved-ref: "229be07ad7ea93e61eefd8ab3082fa5a67d86bae"
+      ref: "3f87abb9c4ce4aaaa4fbb5848bfafbd8a0cfc84f"
+      resolved-ref: "3f87abb9c4ce4aaaa4fbb5848bfafbd8a0cfc84f"
       url: "git://github.com/bradyt/taskd-client-dart.git"
     source: git
     version: "0.0.0-alpha.0"
