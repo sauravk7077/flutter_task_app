@@ -25,9 +25,9 @@ class _ConfigurationState extends State<Configuration> {
   void initState() {
     super.initState();
     _controllers = <TextEditingController>[
-      TextEditingController(text: readFileFromBoxBox('0')),
-      TextEditingController(text: readFileFromBoxBox('1')),
-      TextEditingController(text: readFileFromBoxBox('2')),
+      TextEditingController(text: readFileFromPemBox('0')),
+      TextEditingController(text: readFileFromPemBox('1')),
+      TextEditingController(text: readFileFromPemBox('2')),
     ];
     _credentialControllers = <TextEditingController>[
       TextEditingController(text: readFileFromCredBox('0')),
@@ -53,7 +53,7 @@ class _ConfigurationState extends State<Configuration> {
   void _saveToBox() async {
     try {
       for (int i = 0; i < _controllers.length; i++) {
-        await saveFileToBoxBox(name: i.toString(), data: _controllers[i].text);
+        await saveFileToPemBox(name: i.toString(), data: _controllers[i].text);
         await saveFileToCredBox(
             name: i.toString(), data: _credentialControllers[i].text);
       }
@@ -167,6 +167,7 @@ class _ConfigurationState extends State<Configuration> {
 
   @override
   Widget build(BuildContext context) {
+    bool istopRoute = !Navigator.of(context).canPop();
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -189,7 +190,10 @@ class _ConfigurationState extends State<Configuration> {
           body: TabBarView(children: [firstTab(), secondTab()]),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.save),
-            onPressed: _saveToBox,
+            onPressed: () {
+              _saveToBox();
+              if (istopRoute) Navigator.pushReplacementNamed(context, '/home');
+            },
           ),
         ));
   }

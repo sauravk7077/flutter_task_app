@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_app/shared/misc.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 
@@ -6,10 +7,13 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () async {
-      if (boxBox == null)
+      print(pemBox);
+      if (pemBox == null)
         Navigator.pushReplacementNamed(context, '/config');
-      else
+      else {
+        syncData();
         Navigator.pushReplacementNamed(context, '/home');
+      }
     });
     return Container(
         decoration: BoxDecoration(color: Theme.of(context).primaryColor),

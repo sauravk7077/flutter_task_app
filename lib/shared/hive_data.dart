@@ -4,13 +4,13 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-Box dataBox, boxBox, credBox;
+Box dataBox, pemBox, credBox;
 
 void initializeDatabase() async {
   Directory d = await getApplicationDocumentsDirectory();
   Hive..init(d.path);
   dataBox = await Hive.openBox('data');
-  boxBox = await Hive.openBox('box');
+  pemBox = await Hive.openBox('box');
   credBox = await Hive.openBox('cred');
 }
 
@@ -18,11 +18,11 @@ ValueListenable<Box<dynamic>> getDataBoxListenable() {
   return dataBox.listenable();
 }
 
-Future<void> saveFileToBoxBox(
+Future<void> saveFileToPemBox(
         {@required dynamic data, @required String name}) async =>
-    await boxBox.put(name, data);
+    await pemBox.put(name, data);
 
-String readFileFromBoxBox(String name) => boxBox.get(name);
+String readFileFromPemBox(String name) => pemBox.get(name);
 
 Future<void> saveFileToDataBox(
         {@required dynamic data, @required String name}) async =>
@@ -38,6 +38,6 @@ dynamic readFileFromCredBox(String name) => credBox.get(name);
 
 void disposeBoxes() {
   dataBox.close();
-  boxBox.close();
+  pemBox.close();
   credBox.close();
 }

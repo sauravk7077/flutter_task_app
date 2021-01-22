@@ -35,7 +35,7 @@ Task generateNewTask(String desc) {
 Future<void> syncData({String task}) async {
   try {
     var box = Hive.box('box');
-    var userKey = readFileFromBoxBox('userKey');
+    var userKey = readFileFromPemBox('userKey');
     var payload;
     if (task != null)
       payload = Payload(tasks: <Task>[generateNewTask(task)], userKey: userKey);
@@ -50,7 +50,7 @@ Future<void> syncData({String task}) async {
     var response = await synchronize(
         connection: connection, credentials: credentials, payload: payload);
     print(response.header);
-    await saveFileToBoxBox(name: 'userKey', data: response.payload.userKey);
+    await saveFileToPemBox(name: 'userKey', data: response.payload.userKey);
     for (var task in response.payload.tasks) {
       print(task.description);
     }
