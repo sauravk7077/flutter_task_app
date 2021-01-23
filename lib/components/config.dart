@@ -16,12 +16,13 @@ class _ConfigurationState extends State<Configuration> {
   final GlobalKey _formkey = GlobalKey();
   final GlobalKey _credFormkey = GlobalKey();
   var _controllers, _credentialControllers;
-  static List<String> _titles = <String>[
-    "Input the CA File",
-    "Input the Client Key File",
-    "Input the Client Certificat File",
+  static final List<String> _titles = <String>[
+    'Input the CA File',
+    'Input the Client Key File',
+    'Input the Client Certificat File',
   ];
 
+  @override
   void initState() {
     super.initState();
     _controllers = <TextEditingController>[
@@ -36,7 +37,7 @@ class _ConfigurationState extends State<Configuration> {
     ];
   }
 
-  static InputDecoration _inputDeco =
+  static final InputDecoration _inputDeco =
       InputDecoration(enabledBorder: OutlineInputBorder());
 
   void _importAndSetData(int idx) async {
@@ -52,7 +53,7 @@ class _ConfigurationState extends State<Configuration> {
 
   void _saveToBox() async {
     try {
-      for (int i = 0; i < _controllers.length; i++) {
+      for (var i = 0; i < _controllers.length; i++) {
         await saveFileToPemBox(name: i.toString(), data: _controllers[i].text);
         await saveFileToCredBox(
             name: i.toString(), data: _credentialControllers[i].text);
@@ -78,7 +79,7 @@ class _ConfigurationState extends State<Configuration> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        child: Text("${_titles[index]}:"),
+                        child: Text('${_titles[index]}:'),
                         padding: Configuration._margin2,
                       ),
                       Row(
@@ -95,7 +96,7 @@ class _ConfigurationState extends State<Configuration> {
                             onPressed: () {
                               _importAndSetData(index);
                             },
-                            child: Text("Import"),
+                            child: Text('Import'),
                           )
                         ],
                       )
@@ -121,7 +122,7 @@ class _ConfigurationState extends State<Configuration> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Server",
+                'Server',
               ),
               SizedBox(height: 10),
               TextFormField(
@@ -135,7 +136,7 @@ class _ConfigurationState extends State<Configuration> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Port",
+                'Port',
               ),
               SizedBox(height: 10),
               TextFormField(
@@ -150,7 +151,7 @@ class _ConfigurationState extends State<Configuration> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Credentials",
+                'Credentials',
               ),
               SizedBox(height: 10),
               TextFormField(
@@ -167,22 +168,22 @@ class _ConfigurationState extends State<Configuration> {
 
   @override
   Widget build(BuildContext context) {
-    bool istopRoute = !Navigator.of(context).canPop();
+    var istopRoute = !Navigator.of(context).canPop();
     return DefaultTabController(
         length: 2,
         child: Scaffold(
           backgroundColor: Theme.of(context).primaryColor,
           appBar: AppBar(
-            title: Text("Settings"),
+            title: Text('Settings'),
             bottom: TabBar(
               tabs: [
                 Tab(
                   icon: Icon(Icons.security),
-                  text: "Certificates",
+                  text: 'Certificates',
                 ),
                 Tab(
                   icon: Icon(Icons.verified_user),
-                  text: "Credentials",
+                  text: 'Credentials',
                 )
               ],
             ),
