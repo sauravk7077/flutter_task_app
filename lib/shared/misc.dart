@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
-import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:taskc/taskc.dart';
 import 'package:uuid/uuid.dart';
@@ -36,7 +35,6 @@ Task generateNewTask(String desc) {
 
 Future<void> syncData() async {
   try {
-    var box = Hive.box('box');
     var d = await getApplicationDocumentsDirectory();
     var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
     var ca;
@@ -63,9 +61,9 @@ Future<void> syncData() async {
       port = int.parse(server.last);
       credentials = Credentials.fromString(taskrc['taskd.credentials']);
     } catch (_) {
-      ca = utf8.encode(await box.get('0'));
-      certificate = utf8.encode(await box.get('2'));
-      key = utf8.encode(await box.get('1'));
+      ca = utf8.encode(readFileFromPemBox('0'));
+      certificate = utf8.encode(readFileFromPemBox('2'));
+      key = utf8.encode(readFileFromPemBox('1'));
       address = readFileFromCredBox('0');
       port = int.parse(readFileFromCredBox('1'));
       credentials = Credentials.fromString(readFileFromCredBox('2'));
