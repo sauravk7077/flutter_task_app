@@ -7,3 +7,7 @@ A new Flutter project for https://github.com/bradyt/taskd-client-dart.
 
 ## About
 So, you have come to explore some projects. You are wondering what this is. Don't worry, I'll explain it to you. Flutter Task App is a flutter project to handle your day-to-day tasks. It is still in development phase so it might not have all the features. 
+
+## Features we might improve on later:
+- Only show tasks with status:pending by default.
+- Add ability to make a task completed.
