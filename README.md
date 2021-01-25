@@ -1,6 +1,7 @@
 # Flutter Task App
 
 ![Flutter CI](https://github.com/sauravk7077/flutter_task_app/workflows/Flutter%20CI/badge.svg)
+![Version](https://img.shields.io/badge/Version-0.0.0-blue)
 
 A new Flutter project for https://github.com/bradyt/taskd-client-dart.
 
