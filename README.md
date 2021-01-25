@@ -11,3 +11,5 @@ So, you have come to explore some projects. You are wondering what this is. Don'
 ## Features we might improve on later:
 - Only show tasks with status:pending by default.
 - Add ability to make a task completed.
+- Add urgency calculation so default sort is same as default in task cli.
+- Adding a profiles feature, so a user can easily add new configs and remove old configs.
