@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:taskc/taskc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,7 +22,7 @@ Future<String> getFileFromDialog() async {
 }
 
 Task generateNewTask(String desc) {
-  var time = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+  var time = DateTime.now().toUtc();
   return Task(
       status: 'pending',
       uuid: Uuid().v1(),
@@ -35,7 +34,6 @@ Task generateNewTask(String desc) {
 
 Future<void> syncData() async {
   try {
-    var d = await getApplicationDocumentsDirectory();
     var payload = File('${d.path}/.task/backlog.data').readAsStringSync();
     var ca;
     var certificate;
@@ -61,12 +59,12 @@ Future<void> syncData() async {
       port = int.parse(server.last);
       credentials = Credentials.fromString(taskrc['taskd.credentials']);
     } catch (_) {
-      ca = utf8.encode(readFileFromPemBox('0'));
-      certificate = utf8.encode(readFileFromPemBox('2'));
-      key = utf8.encode(readFileFromPemBox('1'));
-      address = readFileFromCredBox('0');
-      port = int.parse(readFileFromCredBox('1'));
-      credentials = Credentials.fromString(readFileFromCredBox('2'));
+      ca = utf8.encode(readFileFromCredBox('ca'));
+      certificate = utf8.encode(readFileFromCredBox('certificate'));
+      key = utf8.encode(readFileFromCredBox('key'));
+      address = readFileFromCredBox('server');
+      port = int.parse(readFileFromCredBox('port'));
+      credentials = Credentials.fromString(readFileFromCredBox('credentials'));
     }
     var connection = Connection(
         address: address,

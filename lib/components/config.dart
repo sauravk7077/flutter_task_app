@@ -26,14 +26,14 @@ class _ConfigurationState extends State<Configuration> {
   void initState() {
     super.initState();
     _controllers = <TextEditingController>[
-      TextEditingController(text: readFileFromPemBox('0')),
-      TextEditingController(text: readFileFromPemBox('1')),
-      TextEditingController(text: readFileFromPemBox('2')),
+      TextEditingController(text: readFileFromCredBox('ca')),
+      TextEditingController(text: readFileFromCredBox('key')),
+      TextEditingController(text: readFileFromCredBox('certificate')),
     ];
     _credentialControllers = <TextEditingController>[
-      TextEditingController(text: readFileFromCredBox('0')),
-      TextEditingController(text: readFileFromCredBox('1')),
-      TextEditingController(text: readFileFromCredBox('2')),
+      TextEditingController(text: readFileFromCredBox('server')),
+      TextEditingController(text: readFileFromCredBox('port')),
+      TextEditingController(text: readFileFromCredBox('credentials')),
     ];
   }
 
@@ -52,11 +52,13 @@ class _ConfigurationState extends State<Configuration> {
   }
 
   void _saveToBox() async {
+    var pems = ['ca', 'key', 'certificate'];
+    var creds = ['server', 'port', 'credentials'];
     try {
       for (var i = 0; i < _controllers.length; i++) {
-        await saveFileToPemBox(name: i.toString(), data: _controllers[i].text);
+        await saveFileToCredBox(name: pems[i], data: _controllers[i].text);
         await saveFileToCredBox(
-            name: i.toString(), data: _credentialControllers[i].text);
+            name: creds[i], data: _credentialControllers[i].text);
       }
     } on Exception catch (e) {
       print(e);

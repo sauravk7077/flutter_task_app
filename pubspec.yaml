@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   loading_animations: ^2.1.0
   taskc:
+    # path: ../taskd-client-dart
     git:
       url: git://github.com/bradyt/taskd-client-dart.git
       ref: 3f87abb9c4ce4aaaa4fbb5848bfafbd8a0cfc84f
