@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
@@ -5,6 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:taskc/taskc.dart';
 
 class Home extends StatelessWidget {
+  final String title =
+      'task${kDebugMode ? ' 🐞' : (kProfileMode ? ' 🚀' : '')}';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +34,7 @@ class Home extends StatelessWidget {
             ),
           )
         ],
-        title: Text('Todo App'),
+        title: Text(title),
       ),
       body: ValueListenableBuilder(
         valueListenable: getDataBoxListenable(),
