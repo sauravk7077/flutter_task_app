@@ -4,6 +4,7 @@ import 'package:flutter_task_app/shared/misc.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:intl/intl.dart';
 import 'package:taskc/taskc.dart';
+import 'package:package_info/package_info.dart';
 
 class Home extends StatelessWidget {
   final String title =
@@ -14,24 +15,26 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          FlatButton.icon(
+          MaterialButton(
               onPressed: () async {
                 await syncData();
               },
-              icon: Icon(Icons.sync),
-              label: Text(
-                'Sync',
-              )),
-          FlatButton.icon(
-            icon: Icon(
+              child: Icon(Icons.sync)),
+          MaterialButton(
+              onPressed: () async {
+                showAboutDialog(
+                    context: context,
+                    applicationName: 'Task App',
+                    applicationVersion: '0.0.0');
+              },
+              child: Icon(Icons.info)),
+          MaterialButton(
+            child: Icon(
               Icons.settings,
             ),
             onPressed: () {
               Navigator.pushNamed(context, '/config');
             },
-            label: Text(
-              'Settings',
-            ),
           )
         ],
         title: Text(title),
