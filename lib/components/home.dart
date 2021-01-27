@@ -38,16 +38,24 @@ class Home extends StatelessWidget {
       ),
       body: ValueListenableBuilder(
         valueListenable: getDataBoxListenable(),
-        builder: (context, box, _) => Container(
-          margin: EdgeInsets.all(5),
-          child: ListView.builder(
-            itemCount: box.toMap().entries.length,
-            itemBuilder: (buildContext, i) {
-              return TodoCard(
-                  task: Task.fromJson(box.toMap().entries.elementAt(i).value));
-            },
-          ),
-        ),
+        builder: (context, box, _) {
+          var tasks = box
+              .toMap()
+              .map((key, value) => MapEntry(key, Task.fromJson(value)))
+              .entries
+              .where((entry) => entry.value.status == 'pending')
+              .toList();
+
+          return Container(
+            margin: EdgeInsets.all(5),
+            child: ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (buildContext, i) {
+                return TodoCard(task: tasks.elementAt(i).value);
+              },
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
