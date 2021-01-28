@@ -100,6 +100,8 @@ Future<void> syncData() async {
     response.payload.tasks.forEach((task) {
       addTask(Task.fromJson(json.decode(task)));
     });
+  } on SocketException catch (e) {
+    print(e.address);
   } on Exception catch (e) {
     print(e);
   }
