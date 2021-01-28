@@ -15,21 +15,22 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          MaterialButton(
+          IconButton(
               onPressed: () async {
                 await syncData();
               },
-              child: Icon(Icons.sync)),
-          MaterialButton(
+              icon: Icon(Icons.sync)),
+          IconButton(
               onPressed: () async {
+                var packageInfo = await PackageInfo.fromPlatform();
                 showAboutDialog(
                     context: context,
-                    applicationName: 'Task App',
-                    applicationVersion: '0.0.0');
+                    applicationName: packageInfo.appName,
+                    applicationVersion: packageInfo.version);
               },
-              child: Icon(Icons.info)),
-          MaterialButton(
-            child: Icon(
+              icon: Icon(Icons.info)),
+          IconButton(
+            icon: Icon(
               Icons.settings,
             ),
             onPressed: () {
