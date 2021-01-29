@@ -1,10 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_task_app/shared/misc.dart';
-import 'package:flutter_task_app/shared/hive_data.dart';
-import 'package:intl/intl.dart';
-import 'package:taskc/taskc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
+import 'package:taskc/taskc.dart';
+
+import 'package:flutter_task_app/shared/hive_data.dart';
+import 'package:flutter_task_app/shared/misc.dart';
 
 class Home extends StatelessWidget {
   final String title =
@@ -15,9 +18,51 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          if (kDebugMode)
+            IconButton(
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    scrollable: true,
+                    title: Text('Reset database'),
+                    content: Text(
+                      'This will remove your local tasks and configuration. Are you sure?',
+                    ),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: Text('Reset'),
+                        onPressed: () async {
+                          await resetDatabase();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: Icon(Icons.warning),
+            ),
           IconButton(
               onPressed: () async {
-                await syncData();
+                try {
+                  await syncData();
+                } on Exception catch (e, trace) {
+                  await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      scrollable: true,
+                      title: Text('${e.runtimeType}'),
+                      content: Column(
+                        children: [
+                          SelectableText('$e'),
+                          Divider(),
+                          SelectableText('$trace'),
+                        ],
+                      ),
+                    ),
+                  );
+                }
               },
               icon: Icon(Icons.sync)),
           IconButton(
@@ -48,15 +93,26 @@ class Home extends StatelessWidget {
               .map((key, value) => MapEntry(key, Task.fromJson(value)))
               .entries
               .where((entry) => entry.value.status == 'pending')
-              .toList();
+              .toList()
+                ..sort((a, b) {
+                  if (urgency(a.value) > urgency(b.value)) {
+                    return -1;
+                  } else if (urgency(a.value) == urgency(b.value)) {
+                    return 0;
+                  } else {
+                    return 1;
+                  }
+                });
 
-          return Container(
-            margin: EdgeInsets.all(5),
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (buildContext, i) {
-                return TodoCard(task: tasks.elementAt(i).value);
-              },
+          return Scrollbar(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (buildContext, i) {
+                  return TodoCard(task: tasks.elementAt(i).value);
+                },
+              ),
             ),
           );
         },
@@ -77,6 +133,8 @@ class Home extends StatelessWidget {
 }
 
 class TodoCard extends StatelessWidget {
+  const TodoCard({@required this.task});
+
   final Task task;
 
   static final titleStyle =
@@ -84,8 +142,6 @@ class TodoCard extends StatelessWidget {
 
   static final _borderStyle =
       BorderSide(color: Colors.grey[200], width: 2, style: BorderStyle.solid);
-
-  const TodoCard({@required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -112,18 +168,54 @@ class TodoCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 20),
-                    Text(
-                      task.description,
-                      style: TextStyle(fontSize: 18),
-                    )
+                    Flexible(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text.rich(
+                          TextSpan(
+                            style: GoogleFonts.firaMono(),
+                            children: [
+                              TextSpan(
+                                text: '/',
+                                style: TextStyle(
+                                  color: (Theme.of(context).brightness ==
+                                          Brightness.dark)
+                                      ? Color(0xffa9a9a9)
+                                      : Color(0xffd3d3d3),
+                                ),
+                              ),
+                              TextSpan(
+                                text: task.description,
+                              ),
+                              TextSpan(
+                                text: '/',
+                                style: TextStyle(
+                                  color: (Theme.of(context).brightness ==
+                                          Brightness.dark)
+                                      ? Color(0xffa9a9a9)
+                                      : Color(0xffd3d3d3),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    DateFormat('kk:ss').format(task.modified.toLocal()),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${age(task.entry)}',
+                    ),
+                    Flexible(
+                      child: Text(
+                        '${urgency(task)}',
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
