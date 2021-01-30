@@ -37,8 +37,8 @@ class _ConfigurationState extends State<Configuration> {
     ];
   }
 
-  static final InputDecoration _inputDeco =
-      InputDecoration(enabledBorder: OutlineInputBorder());
+  static final InputDecoration _inputDeco = InputDecoration(
+      enabledBorder: OutlineInputBorder(), focusedBorder: OutlineInputBorder());
 
   Future<void> _importAndSetData(int idx) async {
     try {

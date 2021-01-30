@@ -34,7 +34,7 @@ Task generateNewTask(String desc) {
       entry: time,
       description: desc,
       modified: time,
-      priority: '0');
+      priority: 'L');
 }
 
 Future<Map> syncData() async {
@@ -77,7 +77,7 @@ Future<Map> syncData() async {
         ..setTrustedCertificatesBytes(ca)
         ..useCertificateChainBytes(certificate)
         ..usePrivateKeyBytes(key),
-      onBadCertificate: (_) => true);
+      onBadCertificate: (Platform.isIOS) ? (_) => true : null);
   var response = await synchronize(
       connection: connection, credentials: credentials, payload: payload);
   print(response.header);
