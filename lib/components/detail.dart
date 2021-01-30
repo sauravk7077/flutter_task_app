@@ -61,20 +61,24 @@ class DetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(2),
       child: Card(
-        elevation: 0.4,
+        elevation: 0.1,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(desc),
+              Text(
+                desc,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               SizedBox(
                 height: 10,
               ),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+              Container(
+                  decoration: BoxDecoration(color: Colors.grey[200]),
+                  padding: EdgeInsets.all(20),
                   child: Text(value))
             ],
           ),

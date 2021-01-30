@@ -194,9 +194,7 @@ class TodoCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Detail(task)));
+              context, MaterialPageRoute(builder: (ctx) => Detail(task)));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
