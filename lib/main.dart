@@ -8,10 +8,9 @@ import 'package:flutter_task_app/components/loading.dart';
 import 'package:flutter_task_app/components/home.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  unawaited(
-      getApplicationDocumentsDirectory().then((d) => initializeDatabase(d)));
+  unawaited(getApplicationDocumentsDirectory().then(initializeDatabase));
   runApp(MyApp());
 }
 

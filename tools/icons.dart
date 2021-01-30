@@ -40,6 +40,7 @@ void main() {
     '48x48': '../android/app/src/main/res/mipmap-xhdpi/ic_launcher.png',
     '72x72': '../android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png',
     '96x96': '../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png',
+    // ignore: avoid_function_literals_in_foreach_calls
   }.entries.forEach((entry) => Process.run(
         'convert',
         [

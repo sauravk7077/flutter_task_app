@@ -1,5 +1,8 @@
 class TaskdException implements Exception {
-  TaskdException(this.cause);
+  TaskdException(this.header);
 
-  Map cause;
+  Map<String, String> header;
+
+  @override
+  String toString() => '$header';
 }

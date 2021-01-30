@@ -15,7 +15,7 @@ class _ConfigurationState extends State<Configuration> {
       BorderSide(color: Colors.black, width: 2, style: BorderStyle.solid);
   final GlobalKey _formkey = GlobalKey();
   final GlobalKey _credFormkey = GlobalKey();
-  var _controllers, _credentialControllers;
+  List<TextEditingController> _controllers, _credentialControllers;
   static final List<String> _titles = <String>[
     'Input the CA File',
     'Input the Client Key File',
@@ -40,7 +40,7 @@ class _ConfigurationState extends State<Configuration> {
   static final InputDecoration _inputDeco =
       InputDecoration(enabledBorder: OutlineInputBorder());
 
-  void _importAndSetData(int idx) async {
+  Future<void> _importAndSetData(int idx) async {
     try {
       dynamic data = await getFileFromDialog();
       if (data != null) {
@@ -51,7 +51,7 @@ class _ConfigurationState extends State<Configuration> {
     }
   }
 
-  void _saveToBox() async {
+  Future<void> _saveToBox() async {
     var pems = ['ca', 'key', 'certificate'];
     var creds = ['server', 'port', 'credentials'];
     try {
@@ -188,7 +188,9 @@ class _ConfigurationState extends State<Configuration> {
             child: Icon(Icons.save),
             onPressed: () {
               _saveToBox();
-              if (istopRoute) Navigator.pushReplacementNamed(context, '/home');
+              if (istopRoute) {
+                Navigator.pushReplacementNamed(context, '/home');
+              }
             },
           ),
         ));

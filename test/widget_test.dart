@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_types_on_closure_parameters
+
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
@@ -21,7 +23,7 @@ void main() {
       (WidgetTester tester) async {
     await tester
         .pumpWidget(MaterialApp(home: TodoCard(task: generateNewTask('desc'))));
-    final desc = find.text('/desc/');
+    var desc = find.text('/desc/');
     expect(desc, findsOneWidget);
   });
 

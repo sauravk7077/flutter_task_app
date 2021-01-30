@@ -13,7 +13,7 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 
-void main() async {
+Future<void> main() async {
   bool localServerUnavailable;
   Socket socket;
 
@@ -25,6 +25,7 @@ void main() async {
     localServerUnavailable = true;
   }
 
+  // ignore: avoid_types_on_closure_parameters
   testWidgets('Add a task', (WidgetTester tester) async {
     await tester.runAsync(() async {
       await initializeDatabase(Directory('../fixture/${Uuid().v1()}'));

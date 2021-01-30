@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:taskc/taskc.dart';
 
+import 'package:flutter_task_app/shared/errors/taskd_exception.dart';
 import 'package:flutter_task_app/shared/hive_data.dart';
 import 'package:flutter_task_app/shared/misc.dart';
 
@@ -27,6 +28,7 @@ class Home extends StatelessWidget {
                     scrollable: true,
                     title: Text('Reset database'),
                     content: Text(
+                      // ignore: lines_longer_than_80_chars
                       'This will remove your local tasks and configuration. Are you sure?',
                     ),
                     actions: <Widget>[
@@ -43,28 +45,70 @@ class Home extends StatelessWidget {
               },
               icon: Icon(Icons.warning),
             ),
-          IconButton(
-              onPressed: () async {
-                try {
-                  await syncData();
-                } on Exception catch (e, trace) {
-                  await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      scrollable: true,
-                      title: Text('${e.runtimeType}'),
-                      content: Column(
-                        children: [
-                          SelectableText('$e'),
-                          Divider(),
-                          SelectableText('$trace'),
-                        ],
+          Builder(
+            builder: (context) => IconButton(
+                onPressed: () async {
+                  try {
+                    var header = await syncData();
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${header['code']}: ${header['status']}'),
                       ),
-                    ),
-                  );
-                }
-              },
-              icon: Icon(Icons.sync)),
+                    );
+                  } on TaskdException catch (e, trace) {
+                    print(e);
+                    var hasTrace = '$trace'.isNotEmpty;
+                    if (hasTrace) {
+                      print(trace);
+                    }
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        scrollable: true,
+                        title: Text('${e.runtimeType}'),
+                        content: Column(
+                          children: [
+                            SelectableText(
+                              '${e.header['code']}: ${e.header['status']}',
+                            ),
+                            // Divider(),
+                            // SelectableText(
+                            //   'Compare: https://taskwarrior.org/docs/design/protocol.html',
+                            // ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } on Exception catch (e, trace) {
+                    print(e);
+                    var hasTrace = '$trace'.isNotEmpty;
+                    if (hasTrace) {
+                      print(trace);
+                    }
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        scrollable: true,
+                        title: Text('${e.runtimeType}'),
+                        content: Column(
+                          children: [
+                            SelectableText('$e'),
+                            if (hasTrace) ...[
+                              ExpansionTile(
+                                title: Text('StackTrace'),
+                                children: [
+                                  SelectableText('$trace'),
+                                ],
+                              ),
+                            ]
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
+                icon: Icon(Icons.sync)),
+          ),
           IconButton(
               onPressed: () async {
                 var packageInfo = await PackageInfo.fromPlatform();
@@ -146,81 +190,84 @@ class TodoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        border: Border(
-                            top: _borderStyle,
-                            right: _borderStyle,
-                            bottom: _borderStyle,
-                            left: _borderStyle),
+      child: InkWell(
+        onTap: () => print(task.uuid),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          border: Border(
+                              top: _borderStyle,
+                              right: _borderStyle,
+                              bottom: _borderStyle,
+                              left: _borderStyle),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 20),
-                    Flexible(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Text.rich(
-                          TextSpan(
-                            style: GoogleFonts.firaMono(),
-                            children: [
-                              TextSpan(
-                                text: '/',
-                                style: TextStyle(
-                                  color: (Theme.of(context).brightness ==
-                                          Brightness.dark)
-                                      ? Color(0xffa9a9a9)
-                                      : Color(0xffd3d3d3),
+                      SizedBox(width: 20),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text.rich(
+                            TextSpan(
+                              style: GoogleFonts.firaMono(),
+                              children: [
+                                TextSpan(
+                                  text: '/',
+                                  style: TextStyle(
+                                    color: (Theme.of(context).brightness ==
+                                            Brightness.dark)
+                                        ? Color(0xffa9a9a9)
+                                        : Color(0xffd3d3d3),
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: task.description,
-                              ),
-                              TextSpan(
-                                text: '/',
-                                style: TextStyle(
-                                  color: (Theme.of(context).brightness ==
-                                          Brightness.dark)
-                                      ? Color(0xffa9a9a9)
-                                      : Color(0xffd3d3d3),
+                                TextSpan(
+                                  text: task.description,
                                 ),
-                              ),
-                            ],
+                                TextSpan(
+                                  text: '/',
+                                  style: TextStyle(
+                                    color: (Theme.of(context).brightness ==
+                                            Brightness.dark)
+                                        ? Color(0xffa9a9a9)
+                                        : Color(0xffd3d3d3),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${age(task.entry)}',
-                    ),
-                    Flexible(
-                      child: Text(
-                        '${urgency(task)}',
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        age(task.entry),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Flexible(
+                        child: Text(
+                          '${urgency(task)}',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -235,7 +282,7 @@ class _TaskFormState extends State<TaskForm> {
   final TextEditingController _taskNameController =
       TextEditingController(text: '');
 
-  void _addData(context) async {
+  Future<void> _addData(context) async {
     var task = generateNewTask(_taskNameController.text);
     await addTask(task);
     Navigator.pop(context);
