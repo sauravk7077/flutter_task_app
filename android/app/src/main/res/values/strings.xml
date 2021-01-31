@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">task</string>
+    <string name="app_name_debug">task🐞</string>
+    <string name="app_name_profile">task🚀</string>
+</resources>

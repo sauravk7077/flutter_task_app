@@ -21,30 +21,23 @@ class Detail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DetailCard(
-              desc: 'Description',
-              value: task.description,
-            ),
-            DetailCard(
-              desc: 'Due',
-              value: task.due != null ? task.due.toString() : 'Nil',
-            ),
-            DetailCard(
-              desc: 'End',
-              value: task.end != null ? task.end.toString() : 'Nil',
-            ),
-            DetailCard(
-              desc: 'Entry',
-              value: task.entry != null ? task.entry.toString() : 'Nil',
-            ),
-            DetailCard(
-              desc: 'Modified',
-              value: task.modified != null ? task.modified.toString() : 'Nil',
-            ),
-            DetailCard(
-              desc: 'Priority',
-              value: task.priority != null ? task.priority.toString() : 'Nil',
-            ),
+            for (var entry in {
+              'Description': task.description,
+              'Due': task.due,
+              'End': task.end,
+              'Entry': task.entry,
+              'Modified': task.modified,
+              'Priority': task.priority,
+            }.entries)
+              DetailCard(
+                desc: entry.key,
+                value: entry.value != null
+                    ? ((entry.value is DateTime)
+                        // ignore: avoid_as
+                        ? '${(entry.value as DateTime).toLocal()}'
+                        : '${entry.value}')
+                    : 'Nil',
+              ),
           ],
         ),
       ),
@@ -53,7 +46,7 @@ class Detail extends StatelessWidget {
 }
 
 class DetailCard extends StatelessWidget {
-  DetailCard({this.desc, this.value});
+  const DetailCard({this.desc, this.value});
 
   final String desc;
   final String value;
@@ -76,10 +69,7 @@ class DetailCard extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                  decoration: BoxDecoration(color: Colors.grey[200]),
-                  padding: EdgeInsets.all(20),
-                  child: Text(value))
+              Container(padding: EdgeInsets.all(20), child: Text(value))
             ],
           ),
         ),

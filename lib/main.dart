@@ -1,16 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pedantic/pedantic.dart';
 
 import 'package:flutter_task_app/components/config.dart';
-import 'package:flutter_task_app/components/loading.dart';
 import 'package:flutter_task_app/components/home.dart';
-import 'package:flutter_task_app/shared/hive_data.dart';
+import 'package:flutter_task_app/components/loading.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  unawaited(getApplicationDocumentsDirectory().then(initializeDatabase));
+void main() {
   runApp(MyApp());
 }
 

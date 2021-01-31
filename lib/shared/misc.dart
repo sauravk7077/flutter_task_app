@@ -26,15 +26,15 @@ Future<String> getFileFromDialog() async {
   }
 }
 
-Task generateNewTask(String desc) {
+Task generateNewTask(String description) {
   var time = DateTime.now().toUtc();
   return Task(
-      status: 'pending',
-      uuid: Uuid().v1(),
-      entry: time,
-      description: desc,
-      modified: time,
-      priority: 'L');
+    status: 'pending',
+    uuid: Uuid().v1(),
+    entry: time,
+    description: description,
+    modified: time,
+  );
 }
 
 Future<Map> syncData() async {
@@ -102,7 +102,7 @@ Future<Map> syncData() async {
       throw TaskdException(response.header);
   }
   for (var task in response.payload.tasks) {
-    await addTask(Task.fromJson(json.decode(task)));
+    await dataBox.put(json.decode(task)['uuid'], json.decode(task));
   }
 
   return response.header;
@@ -188,8 +188,13 @@ double urgencyAge(Task task) {
 
 String age(DateTime dt) {
   var difference = DateTime.now().difference(dt);
-  if (difference.inDays > 0) {
-    return '${difference.inDays}d';
+  var days = difference.inDays;
+  if (days > 365) {
+    return '${days / 365}y';
+  } else if (days > 7) {
+    return '${days ~/ 7}w';
+  } else if (days > 0) {
+    return '${days}d';
   } else if (difference.inHours > 0) {
     return '${difference.inHours}h';
   } else if (difference.inMinutes > 0) {

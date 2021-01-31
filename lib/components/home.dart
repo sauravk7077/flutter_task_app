@@ -257,13 +257,13 @@ class TodoCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        age(task.entry),
-                      ),
                       Flexible(
                         child: Text(
-                          '${urgency(task)}',
+                          '${age(task.entry)} ${task.tags}',
                         ),
+                      ),
+                      Text(
+                        '${urgency(task)}',
                       ),
                     ],
                   ),
