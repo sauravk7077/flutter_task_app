@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:taskc/taskc.dart';
 
+import 'package:flutter_task_app/shared/hive_data.dart';
+import 'package:flutter_task_app/shared/misc.dart';
+
 class Detail extends StatelessWidget {
   const Detail(this.task);
 
@@ -30,6 +33,7 @@ class Detail extends StatelessWidget {
               'Priority': task.priority,
             }.entries)
               DetailCard(
+                uuid: task.uuid,
                 desc: entry.key,
                 value: entry.value != null
                     ? ((entry.value is DateTime)
@@ -46,8 +50,9 @@ class Detail extends StatelessWidget {
 }
 
 class DetailCard extends StatelessWidget {
-  const DetailCard({this.desc, this.value});
+  const DetailCard({this.uuid, this.desc, this.value});
 
+  final String uuid;
   final String desc;
   final String value;
 
@@ -69,7 +74,25 @@ class DetailCard extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Container(padding: EdgeInsets.all(20), child: Text(value))
+              if (desc == 'Priority')
+                DropdownButton(
+                    value: (value == 'Nil') ? '' : value,
+                    items: [
+                      for (var priority in ['H', 'M', 'L', ''])
+                        DropdownMenuItem(
+                          child: Text(priority),
+                          value: priority,
+                        ),
+                    ],
+                    onChanged: (priority) async {
+                      var task = await getTask(uuid);
+                      var newTask = task.copyWith(
+                        priority: () => (priority == '') ? null : priority,
+                      );
+                      await addTask(newTask);
+                    })
+              else
+                Container(padding: EdgeInsets.all(20), child: Text(value))
             ],
           ),
         ),
